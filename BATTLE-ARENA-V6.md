@@ -1,4 +1,16 @@
-# Battle Arena v6 — review build
+# Daily Meme Battle v6 — review build
+
+## Local preview update
+Download the branch ZIP, extract it, open `explained meme/index.html`, then select DAILY MEME BATTLE.
+When opened via file://, the arena uses six embedded original demo memes. A prominent PREVIEW
+banner distinguishes them from Reddit content. Picks only exercise the interface: no network
+requests, scores, votes or daily progress are saved by the arena. Opening over HTTP(S) uses
+production mode and still requires Supabase setup.
+
+V5.2's EXPLAINED code and styling are preserved. Its existing file:// guard skips database loading
+when opened locally, so it can show built-in content instead of the deployed site's database memes.
+No browser rendering test was available; fifteen mocked component checks pass, including offline
+zero-network/no-persistence checks. Full non-Battle byte reconstruction against V5.2 passes.
 
 ## Scope
 Only `explained meme/index.html` changes existing site code:
@@ -6,7 +18,7 @@ Only `explained meme/index.html` changes existing site code:
 - Disable its obsolete parent keyboard-voting handler.
 - Allow `#battle` links to open the arena.
 - Add CSS exclusively under arena-specific classes.
-All other existing HTML/JavaScript bytes reconstruct exactly to the base file.
+All non-Battle HTML/JavaScript bytes reconstruct exactly to V5.2 after reversing the intended arena integration and navigation rename. Obsolete V4/V5 Battle scripts, polling and importers are removed.
 V5.2 and old versions are untouched.
 
 ## Included
@@ -55,7 +67,7 @@ V5.2 and old versions are untouched.
 
 ## Verification performed
 - All five resulting inline scripts parse.
-- Ten mocked component checks pass: eligible pool, double-click guard, no direct PATCH,
+- Fifteen mocked component checks pass: eligible pool, double-click guard, no direct PATCH,
   failed votes not counted, visible failure, confirmed votes counted and visible feedback.
 - Byte reconstruction check confirms unrelated original content is preserved.
 - No real database writes, SQL execution, scheduled imports, browser rendering or deployment
