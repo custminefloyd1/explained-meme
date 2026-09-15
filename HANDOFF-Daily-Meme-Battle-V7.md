@@ -633,3 +633,12 @@ The user ran `supabase/arena-v6-import.sql` in the target Supabase project and r
 This is the expected SQL Editor result for the successful transactional DDL. It indicates no execution error was reported; it does not independently prove every object exists. Presence of `reddit_id`, `reddit_score`, `source`, and the unique Reddit-ID index will be verified by the post-migration check after the V7 migration.
 
 No importer function was deployed, no memes were imported, and Auth/CAPTCHA remain disabled.
+
+
+### V7 voting migration applied — 2026-09-15
+
+The user ran the patched `supabase/arena-v7-retention.sql` from branch `codex/battle-arena-v6` in the target Supabase project and reported: `Success. No rows returned`.
+
+This is the expected SQL Editor result for transactional DDL and means no execution error was reported. It does not by itself verify object presence, RLS, grants, or RPC availability. The next required action is to run `supabase/arena-v7-post-migration-check.sql` and review its single result row.
+
+Anonymous Sign-Ins and Bot and Abuse Protection/CAPTCHA remain disabled. No importer function has been deployed and the database still had zero eligible Trending memes at the last data check.
