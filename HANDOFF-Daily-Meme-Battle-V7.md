@@ -1440,3 +1440,18 @@ This is the intended configuration. Disabling the legacy gateway verifier avoids
 User also previously confirmed that `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` are present as encrypted Supabase Edge Function secrets and that the Resend domain is verified.
 
 Still unverified: actual browser submission, Resend acceptance/log entry, inbox arrival, reply-to behaviour and rate-limit behaviour. Main Contact navigation remains on the legacy page until the first three delivery checks pass.
+
+
+### Contact V1 endpoint deployment visually verified — 2026-09-15
+
+A Supabase Functions-list screenshot now verifies that an Edge Function with the exact endpoint slug `contact-v1` exists and has one deployment. The earlier user report that deployment was complete was inaccurate: the first three attempts created random slugs `bright-function`, `smart-function` and `smooth-responder`, which could not satisfy the frontend's fixed `/functions/v1/contact-v1` request.
+
+The three accidental endpoints remain deployed and must be deleted after the correct endpoint passes the inbox test. They are not referenced by the website and unnecessarily expand the exposed function surface.
+
+Still required before navigation integration:
+
+- Confirm `contact-v1` has `Verify JWT with legacy secret` set to OFF.
+- Retry `contact.html`.
+- Confirm accepted status in the page.
+- Confirm the message in Resend Logs and the destination inbox.
+- Delete only `bright-function`, `smart-function` and `smooth-responder`; preserve `arena-import-v6` and `contact-v1`.
