@@ -1530,3 +1530,28 @@ Release source:
 The Cloudflare Pages production upload has not yet been triggered from this workspace because the Cloudflare connection is not active. The production site must not be described as deployed until Cloudflare confirms a successful deployment and the live-domain smoke test passes.
 
 Database permissions were not changed during the merge and remain locked. The accidental Supabase functions `bright-function`, `smart-function` and `smooth-responder` should be deleted if they still exist; preserve `arena-import-v6` and `contact-v1`.
+
+
+### Cross-page navigation and header consistency fix — 2026-09-15
+
+User testing after the release merge found three routing defects and inconsistent standalone header geometry.
+
+Corrected on branch `codex/navigation-consistency-v1`:
+
+- Certified Funny now links directly to `screensaver.html` and `contact.html` instead of incorrectly returning to the Explained view.
+- Screensaver now links directly to `contact.html`.
+- Removed the unfinished `LIVE` item from the main navigation. Its dormant legacy render code was left unreachable to minimize regression risk.
+- Standardized the standalone logo at 80px desktop, 64px tablet and 56px mobile.
+- Standardized brand-row height, horizontal logo/tagline alignment, 12px gap and tagline baseline across Certified Funny, Screensaver and Contact.
+- Added `tests/navigation-consistency.test.mjs` to prevent route, LIVE-tab and header regressions.
+- Fourteen targeted route/header/script checks passed against the committed branch.
+
+Commits:
+
+- Certified Funny: `5374dcb2074bc7e7d8bb5cb4d2af3a7897788f79`.
+- Screensaver: `fcc9d0148729cefbc762d03e09d0a96ab6809e6a`.
+- Contact: `35c571f7262bad1b3621f468768b165b1c37917d`.
+- Main navigation: `5c8a2fd26eeb6c65f401a1138ebda2b0e487bdef`.
+- Regression test: `e521ac147bae7749827db522861770703e26fb89`.
+
+No Supabase schema, data, authentication setting, Edge Function, grant, RLS policy or Storage policy changed. Database permissions remain locked. This branch is not deployed until visual acceptance and a separate merge/deployment action.
