@@ -1514,3 +1514,19 @@ Commits:
 - Regression guard: `4ce807ba7a75f9728a56fa7a02094001a51b4bff`.
 
 The legacy embedded Contact branch remains dormant inside the monolith and is no longer reachable through public navigation. The accidental Supabase functions `bright-function`, `smart-function` and `smooth-responder` still require owner-confirmed deletion if not already removed.
+
+
+### Production release merge — 2026-09-15
+
+The user explicitly authorized deployment. Pull request #1 was marked ready and squash-merged into `main`.
+
+Release source:
+
+- Reviewed branch head: `6fa1d6679017d62fbf44d7b804e2ef08f9d38e2d`.
+- Resulting main commit: `05df0c0c2929beb416adf49afe2201b97c280638`.
+- Branch comparison immediately before merge: 133 commits ahead, 0 behind.
+- Merge result: successful.
+
+The Cloudflare Pages production upload has not yet been triggered from this workspace because the Cloudflare connection is not active. The production site must not be described as deployed until Cloudflare confirms a successful deployment and the live-domain smoke test passes.
+
+Database permissions were not changed during the merge and remain locked. The accidental Supabase functions `bright-function`, `smart-function` and `smooth-responder` should be deleted if they still exist; preserve `arena-import-v6` and `contact-v1`.
