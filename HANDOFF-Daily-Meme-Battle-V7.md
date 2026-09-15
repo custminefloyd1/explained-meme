@@ -508,3 +508,68 @@ Useful later, not part of the current MVP:
 The frontend is a credible review build and the offline demo is usable. The retention concepts are implemented in code. The V7 backend is designed but completely untested against the real Supabase database. Real crowd percentages, rankings, freshness counts and weekly winners are **not live** until the migration, Auth configuration, sourcing and staging tests are completed.
 
 Merging the PR now would produce a polished interface whose production voting backend is unavailable. Do not do that.
+
+
+---
+
+## 15. Backend execution log — 2026-09-15
+
+### User authorization
+
+The user approved proceeding with backend work and requested that the handoff be updated after every backend change.
+
+### Access check
+
+A supported Supabase connector is not installed/available in this ChatGPT workspace. Only the public client configuration embedded in the existing HTML is visible. No database-owner connection, Supabase dashboard session, CLI access token, service-role secret, staging project or migration runner is available.
+
+Therefore the following actions were **not** performed:
+
+- No SQL was executed.
+- No production or staging database schema was changed.
+- Anonymous authentication was not enabled.
+- RLS/grants were not changed or tested.
+- No Edge Function was deployed.
+- No server secrets were configured.
+- No importer or pg_cron schedule was created.
+- No real votes or meme rows were written.
+
+Trying to use the public browser key for database administration would be insecure and insufficient.
+
+### Safe work completed
+
+Added `supabase/arena-v7-preflight.sql`.
+
+This is a read-only inspection script that checks:
+
+- Required `public.memes` columns and exact types.
+- Current-week eligible trending counts.
+- Missing IDs, titles and image URLs.
+- Duplicate Reddit IDs.
+- Primary/unique constraints.
+- RLS state and policies.
+- Direct anon/authenticated table privileges.
+- Existing V7 object collisions.
+- pg_cron availability.
+- Separate Auth/CAPTCHA settings that must be checked in the dashboard.
+
+The preflight creates, updates and deletes nothing.
+
+### Required user action / continuation point
+
+1. Open the correct Supabase project.
+2. Go to **SQL Editor** and create a new query.
+3. Open `supabase/arena-v7-preflight.sql` from the draft branch.
+4. Paste and run it.
+5. Export or screenshot **every result grid**. Do not send passwords, access tokens, service-role keys or other secrets.
+6. Separately report whether Anonymous Sign-Ins and CAPTCHA are enabled.
+7. Return the results in this conversation.
+
+Do **not** run `arena-v7-retention.sql` yet. Its assumptions must be compared with the real preflight output first.
+
+### Next agent task after results arrive
+
+- Compare actual column types and policies with the V7 migration.
+- Patch unsafe/incompatible assumptions.
+- Update this handoff.
+- Produce an exact, staged migration checklist.
+- Apply/test through a supported authorized Supabase connection if one becomes available; otherwise guide the user through each reviewed SQL operation and verify returned results before continuing.
