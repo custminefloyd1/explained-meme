@@ -1031,3 +1031,43 @@ Product direction recorded:
 - Revenue forecasts must be scenario-based until real monthly users, pageviews, geography, return rates and conversion data exist.
 
 The secure Certified Funny backend has been installed, but the frontend RPC integration remains blocked pending explicit user approval for another replacement of the legacy single-file HTML.
+
+
+### Clean standalone Certified Funny V1 page — 2026-09-15
+
+Repeated attempts to patch the Certified Funny handler inside the 462 KB generated V5.2 bundle were rejected because full-file replacement preserves unrelated legacy write/interceptor and DOM-patching code. The safer architecture was approved: build the secured experience as a clean standalone page before changing navigation.
+
+Added `explained meme/certified-funny.html`.
+
+Implemented:
+
+- Uses only the installed `certified_funny_rate_v1` RPC for ratings.
+- Contains no direct `PATCH` or other browser write to `public.memes`.
+- Reuses the Battle's `arena-v6-session` anonymous Supabase session.
+- Creates a new anonymous session through the existing Turnstile configuration when needed.
+- Waits for an authenticated server confirmation before changing the score, progress or current picture.
+- Shows visible saving, confirmed, duplicate and failed-rating messages.
+- Blocks double submission while a rating is pending.
+- Uses a deterministic daily deck of up to 25 funny pictures.
+- Persists same-day browser progress.
+- Adds 5, 10 and 25 rating milestones; 25 is the full deck, not the only useful completion point.
+- Shows a live top-ten community leaderboard.
+- Uses text nodes for database titles/counts instead of interpolating them into HTML.
+- Uses only database columns already verified in the project.
+- Reuses the existing logo asset and visual language with explicit bounded responsive sizing.
+
+Added `tests/certified-funny-v1.test.mjs`. All 14 checks pass.
+
+Commits:
+
+- Page: `b9e2c1f0271ac5f4190b507ddbb3ea989464ebd9`.
+- Verified-column correction: `a76070c2490b0f1858ad2f6356d3a66694471ae4`.
+- Tests: `65f05bd82dc75dbe3a5b23b0b3c7416dc44ea40e`.
+
+Limitations and next gate:
+
+- The legacy Certified Funny tab inside `index.html` still exists and remains broken after the database lockdown.
+- The new page is not yet linked from that legacy navigation because doing so still requires a separately reviewed integration change.
+- No production deployment occurred.
+- Runtime rating persistence against Supabase has not yet been browser-tested.
+- Test locally at `http://localhost:8000/certified-funny.html`, confirm a rating changes the server value, then refresh and confirm the value persists before integrating navigation.
