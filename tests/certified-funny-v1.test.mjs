@@ -5,7 +5,7 @@ const checks=[
  ["legacy direct PATCH is absent",!html.includes('method:"PATCH"')&&!html.includes("method:'PATCH'")],
  ["server response is checked",html.includes("if(!r.ok)")&&html.includes("Rating was not saved. Please retry.")],
  ["success follows awaited RPC",html.includes("const saved=await r.json()")&&html.includes("Rating confirmed")],
- ["Turnstile token is sent",html.includes("gotrue_meta_security:{captcha_token:await captcha()}")],
+ ["Turnstile token is sent",html.includes("gotrue_meta_security:{captcha_token:await captcha()}")],\n ["Turnstile challenge is clickable",html.includes("turnstileHost")&&html.includes("pointer-events:auto")&&!html.includes("pointer-events:none")],
  ["anonymous session is reused",html.includes('localStorage.getItem("arena-v6-session")')],
  ["double submit guard exists",html.includes("if(state.busy||!current())return")],\n ["rate-limit failure is actionable",html.includes("You’re rating very quickly. Wait one minute, then retry this picture.")],
  ["daily limit is 25",html.includes("LIMIT=25")],
