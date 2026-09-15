@@ -612,3 +612,15 @@ The returned CSV from `arena-v7-preflight-single-result.sql` confirmed:
 - Supabase Dashboard verification: Bot and Abuse Protection/CAPTCHA is disabled.
 
 Do not enable Anonymous Sign-Ins yet. Do not enable CAPTCHA without first adding a compatible CAPTCHA token flow to the frontend. Do not run `arena-v7-retention.sql` until the timestamp compatibility patch and security review are complete.
+
+
+### Backend compatibility patch — 2026-09-15
+
+Completed repository-only preparation; no Supabase SQL was executed.
+
+- Patched `supabase/arena-v7-retention.sql` to treat the inspected legacy `memes.created_at` `timestamp without time zone` values explicitly as UTC before weekly comparisons and API output.
+- Reviewed `supabase/arena-v6-import.sql` against the preflight schema. It adds only the missing `reddit_id`, `reddit_score`, and `source` columns plus a unique Reddit-ID index. It does not rewrite or delete existing meme rows. Index creation deliberately fails if future/pre-existing non-null duplicates exist.
+- Added read-only `supabase/arena-v7-post-migration-check.sql`. It verifies importer columns, V7 tables, RLS, function presence, RPC grants, and absence of direct client grants on V7 tables in one result row. It intentionally does not call `arena_state_v7`, because that RPC can finalize a closed season and is therefore not read-only.
+- Attempted to run the existing mocked frontend suite against files fetched from GitHub. The transient runner could not ingest the large single-file HTML reliably, so this attempt was inconclusive rather than a pass. The SQL-only change does not alter frontend code, but the suite must still be rerun from a normal repository checkout before release.
+
+Current safe execution order remains: importer prerequisite, V7 migration, post-migration check, controlled seed/import test, then Auth/CAPTCHA integration. Do not merge or deploy yet.
