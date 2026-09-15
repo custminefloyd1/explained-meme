@@ -1258,3 +1258,24 @@ Commits:
 - Test: `c2e57bc303f11265eae33954e7435c90669f0461`.
 
 No database or permission change was made. A fresh branch file/ZIP is required to see this frontend update locally.
+
+
+### Certified Funny leaderboard full-image preview — 2026-09-15
+
+The leaderboard's thumbnails were not actionable, preventing visitors from inspecting the pictures ranked as most funny. Every leaderboard row is now a semantic button that can be activated by mouse, touch or keyboard.
+
+Selecting a row opens a native modal preview with:
+
+- The full image using contained aspect-ratio rendering.
+- Neutral `Funny #N` label and leaderboard rank.
+- Community average and confirmed vote count.
+- Close button, Escape support from the native dialog and backdrop-click closing.
+
+Raw upload filenames remain hidden. Added regression guards for the full preview and keyboard-accessible row controls. The committed inline script parses successfully.
+
+Commits:
+
+- Frontend: `263a438764afee8788602e1b117e2034b98d0fcf`.
+- Test: `bccaccba39701ab8f90edeef42d2c86f3efbff36`.
+
+No database, authentication, rating or permission logic changed.
