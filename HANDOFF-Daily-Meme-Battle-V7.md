@@ -642,3 +642,20 @@ The user ran the patched `supabase/arena-v7-retention.sql` from branch `codex/ba
 This is the expected SQL Editor result for transactional DDL and means no execution error was reported. It does not by itself verify object presence, RLS, grants, or RPC availability. The next required action is to run `supabase/arena-v7-post-migration-check.sql` and review its single result row.
 
 Anonymous Sign-Ins and Bot and Abuse Protection/CAPTCHA remain disabled. No importer function has been deployed and the database still had zero eligible Trending memes at the last data check.
+
+
+### Post-migration verification passed — 2026-09-15
+
+The user ran `supabase/arena-v7-post-migration-check.sql` and returned the CSV generated at `2026-09-15 10:13:08+00`.
+
+Verified results:
+
+- All V7 tables exist: `arena_entries_v7`, `arena_votes_v7`, and `arena_winners_v7`.
+- RLS is enabled on all three V7 tables.
+- No direct `anon` or `authenticated` grants exist on the V7 tables.
+- All five V7 functions exist.
+- Importer columns `reddit_id`, `reddit_score`, and `source` exist.
+- No unexpected direct V7 table grants were returned.
+- RPC grants match the design: `arena_state_v7` is executable by `anon` and `authenticated`; `arena_vote_v7` is executable only by `authenticated`; `arena_week_v7` is public. The privileged finalizer and standings functions are not exposed to client roles.
+
+Database schema installation and static permission verification therefore passed. Runtime voting, anonymous Auth, CAPTCHA, importer deployment, real Trending data, concurrency, and season finalization are still unverified.
