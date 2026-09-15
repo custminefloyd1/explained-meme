@@ -772,3 +772,13 @@ Implementation details:
 The mocked Battle test was extended to verify the CAPTCHA token in the anonymous signup request. All 41 assertions passed, including offline no-network/no-persistence checks and existing voting behaviour.
 
 Do not enable CAPTCHA until its secret is configured in Supabase. Then enable CAPTCHA and Anonymous Sign-Ins together and perform a live incognito vote test.
+
+
+### Supabase Auth and CAPTCHA enabled — 2026-09-15
+
+The user confirmed both target-project settings were enabled after the frontend Turnstile integration was committed:
+
+- Authentication → Anonymous Sign-Ins: enabled.
+- Authentication → Bot and Abuse Protection: enabled with Cloudflare Turnstile and the private Turnstile secret.
+
+The secret value was not shared in the conversation or repository. Configuration presence is user-reported and has not yet been verified by a live anonymous signup or vote. The next release gate is a Cloudflare preview deployment on an allowlisted Turnstile hostname, followed by an incognito vote test and database confirmation.
