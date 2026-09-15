@@ -41,35 +41,40 @@ select
   ) then 'PRESENT' else 'MISSING' end
 order by column_name;
 
--- 3. Current data health. Counts only; no meme content is returned.
+-- 3. Current data health. Uses JSON field access so missing optional columns do not abort.
 select
   count(*) as total_rows,
-  count(*) filter(where kind='trending') as trending_rows,
+  count(*) filter(where to_jsonb(m)->>'kind'='trending') as trending_rows,
   count(*) filter(
-    where kind='trending'
-      and created_at >= date_trunc('week',now() at time zone 'UTC') at time zone 'UTC'
-      and created_at <= now()
+    where to_jsonb(m)->>'kind'='trending'
+      and nullif(to_jsonb(m)->>'created_at','')::timestamptz
+        >= date_trunc('week',now() at time zone 'UTC') at time zone 'UTC'
+      and nullif(to_jsonb(m)->>'created_at','')::timestamptz <= now()
   ) as current_week_trending,
-  count(*) filter(where id is null) as null_ids,
-  count(*) filter(where title is null or btrim(title::text)='') as missing_titles,
+  count(*) filter(where nullif(to_jsonb(m)->>'id','') is null) as null_ids,
+  count(*) filter(where nullif(btrim(to_jsonb(m)->>'title'),'') is null) as missing_titles,
   count(*) filter(
-    where kind='trending'
-      and coalesce(nullif(btrim(image_url::text),''),nullif(btrim(image_uri::text),'')) is null
+    where to_jsonb(m)->>'kind'='trending'
+      and coalesce(nullif(btrim(to_jsonb(m)->>'image_url'),''),
+                   nullif(btrim(to_jsonb(m)->>'image_uri'),'')) is null
   ) as trending_without_image,
   count(*) filter(
-    where kind='trending'
-      and coalesce(image_url::text,image_uri::text,'') not like 'https://%'
+    where to_jsonb(m)->>'kind'='trending'
+      and coalesce(to_jsonb(m)->>'image_url',to_jsonb(m)->>'image_uri','') not like 'https://%'
   ) as trending_without_https_image,
-  min(created_at) filter(where kind='trending') as oldest_trending,
-  max(created_at) filter(where kind='trending') as newest_trending
-from public.memes;
+  min(nullif(to_jsonb(m)->>'created_at','')::timestamptz)
+    filter(where to_jsonb(m)->>'kind'='trending') as oldest_trending,
+  max(nullif(to_jsonb(m)->>'created_at','')::timestamptz)
+    filter(where to_jsonb(m)->>'kind'='trending') as newest_trending
+from public.memes m;
 
--- 4. Duplicate Reddit identifiers. Returns identifiers/counts, never titles or images.
--- If reddit_id does not exist, section 1 will show that; skip this query.
-select reddit_id,count(*) as duplicate_count
-from public.memes
-where reddit_id is not null
-group by reddit_id
+-- 4. Duplicate Reddit identifiers. Safe even when reddit_id is absent.
+select
+  to_jsonb(m)->>'reddit_id' as reddit_id,
+  count(*) as duplicate_count
+from public.memes m
+where nullif(to_jsonb(m)->>'reddit_id','') is not null
+group by to_jsonb(m)->>'reddit_id'
 having count(*)>1
 order by duplicate_count desc,reddit_id
 limit 100;
