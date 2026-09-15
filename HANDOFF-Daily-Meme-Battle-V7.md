@@ -1242,3 +1242,19 @@ Commits:
 - Test: `09f4d9393c5bc3e2e4bd68aac7a00ee187ba6423`.
 
 No database schema, data, grants or RLS policies changed. Local retesting requires a fresh branch file/ZIP; refreshing an older extracted copy does not retrieve GitHub updates.
+
+
+### Certified Funny uploaded filenames hidden — 2026-09-15
+
+The user confirmed the previously blocked Turnstile prompt disappeared after refresh. This is expected after successful anonymous authentication because the Supabase session is cached locally; a challenge should not appear for every rating.
+
+Uploaded filenames were visible as picture titles and leaderboard labels. These are storage implementation details, often ugly or revealing, and add no product value.
+
+Changed the standalone page so every public label is a neutral deterministic `Funny #N`; raw database/upload filenames are no longer displayed in the current rating card or leaderboard. Image URLs and database identifiers remain functional internally. Added a regression assertion that forbids the previous title-based display logic.
+
+Commits:
+
+- Frontend: `e637457e3a432d50a93b7f2995779d0b8beec635`.
+- Test: `c2e57bc303f11265eae33954e7435c90669f0461`.
+
+No database or permission change was made. A fresh branch file/ZIP is required to see this frontend update locally.
