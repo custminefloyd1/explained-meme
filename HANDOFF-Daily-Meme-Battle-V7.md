@@ -685,3 +685,13 @@ The repository importer was updated to the current runtime format:
 - Uses an idempotent `reddit_id` upsert with duplicate ignoring.
 
 The function has still not been deployed or invoked.
+
+
+### Importer deployed and secret configured — 2026-09-15
+
+The user confirmed both of the following in the target Supabase project:
+
+- Edge Function deployed with the exact name `arena-import-v6`.
+- Custom function secret `ARENA_IMPORT_SECRET` created and saved.
+
+The secret value was not shared in the conversation or repository. Deployment has not yet been proven by an authorized invocation, function logs, or inserted Trending rows. The next gate is one controlled POST request with the `x-arena-import-secret` header, followed by a database count check.
