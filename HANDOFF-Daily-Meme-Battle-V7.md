@@ -1426,3 +1426,17 @@ The user ran the complete `supabase/contact-v1.sql` migration in the target Supa
 Supabase therefore reported no SQL error and the migration's fail-closed privilege assertion did not abort. The private `contact_deliveries_v1` metadata table and sender/time index are expected to be installed with RLS enabled and all direct public/anon/authenticated table access revoked.
 
 This does not prove email delivery. Remaining gates are deploying `contact-v1`, disabling the legacy gateway JWT toggle because the function performs live `auth.getUser` validation itself, testing `contact.html`, verifying the send in Resend Logs and receiving the message in the configured inbox.
+
+
+### Contact V1 Edge Function deployed — 2026-09-15
+
+The user reported completing both deployment steps:
+
+- Supabase Edge Function deployed with the exact name `contact-v1`.
+- `Verify JWT with legacy secret` set to OFF.
+
+This is the intended configuration. Disabling the legacy gateway verifier avoids incompatibility with current project tokens; it does not bypass authentication because `contact-v1` extracts the bearer token and validates it live through the project Auth service using `admin.auth.getUser(token)`. Invalid or missing identities receive HTTP 401.
+
+User also previously confirmed that `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` are present as encrypted Supabase Edge Function secrets and that the Resend domain is verified.
+
+Still unverified: actual browser submission, Resend acceptance/log entry, inbox arrival, reply-to behaviour and rate-limit behaviour. Main Contact navigation remains on the legacy page until the first three delivery checks pass.
