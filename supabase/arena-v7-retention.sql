@@ -1,5 +1,6 @@
 -- Daily Meme Battle v7. Review/apply in staging; no other page/table policies change.
 -- Requires existing public.memes(id,title,image_url,image_uri,kind,created_at).
+-- The inspected legacy created_at column is timestamp without time zone and is treated as UTC.
 -- Enable Supabase anonymous authentication; configure CAPTCHA/rate limits.
 begin;
 create table if not exists public.arena_entries_v7(
@@ -57,12 +58,13 @@ end $$;
 create or replace function public.arena_standings_v7(p_week timestamptz)
 returns table(id text,title text,image_url text,created_at timestamptz,elo integer,wins integer,losses integer,rank bigint)
 language sql stable security definer set search_path='' as $$
- select m.id::text,m.title,coalesce(m.image_url,m.image_uri),m.created_at,
+ select m.id::text,m.title,coalesce(m.image_url,m.image_uri),m.created_at at time zone 'UTC',
    coalesce(e.rating,1200),coalesce(e.wins,0),coalesce(e.losses,0),
    row_number() over(order by coalesce(e.rating,1200) desc,coalesce(e.wins,0) desc,m.id::text)
  from public.memes m left join public.arena_entries_v7 e on e.meme_id=m.id::text and e.week_start=p_week
- where m.kind='trending' and m.created_at>=p_week and m.created_at< p_week+interval '7 days'
-   and m.created_at<=now() and coalesce(m.image_url,m.image_uri) like 'https://%'
+ where m.kind='trending' and (m.created_at at time zone 'UTC')>=p_week
+   and (m.created_at at time zone 'UTC')<p_week+interval '7 days'
+   and (m.created_at at time zone 'UTC')<=now() and coalesce(m.image_url,m.image_uri) like 'https://%'
 $$;
 
 create or replace function public.arena_state_v7(p_since timestamptz default null)
