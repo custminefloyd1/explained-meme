@@ -21,7 +21,7 @@ Deno.serve(async request => {
         const id=source.pathname.match(/\/comments\/([a-z0-9]+)(?:\/|$)/i)?.[1];
         if(!id||!/(^|\.)reddit\.com$/i.test(source.hostname)||image.protocol!=="https:"||!/\.(png|jpe?g|gif|webp)$/i.test(image.pathname))continue;
         if(!["i.redd.it","preview.redd.it","i.imgur.com"].includes(image.hostname))continue;
-        candidates.set(id,{title:String(post.title||"Reddit meme").slice(0,160),image_url:post.url,image_uri:post.url,kind:"trending",source:"reddit",reddit_id:id,reddit_score:Number(post.ups)||0,elo:1200,wins:0,losses:0,origin:"r/"+sub+" · via MemeAPI"});
+        candidates.set(id,{id:"reddit-"+id,title:String(post.title||"Reddit meme").slice(0,160),image_url:post.url,image_uri:post.url,kind:"trending",source:"reddit",reddit_id:id,reddit_score:Number(post.ups)||0,elo:1200,wins:0,losses:0});
       }
     }catch(error){failures.push(sub+": "+String(error.message))}
   }
