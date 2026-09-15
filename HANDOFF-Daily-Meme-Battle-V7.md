@@ -878,3 +878,31 @@ Verified final state:
 The identified legacy public-write exposure is closed. Public reads remain available. Daily Meme Battle V7 RPC voting and the admin importer are not dependent on the removed permissions.
 
 Remaining release work is separate: retest the branch in the browser after the share/extra-round fixes, configure automatic importer scheduling, test season finalization, and establish a safe Cloudflare deployment path.
+
+
+### Daily-ten hard stop and stronger vote feedback — 2026-09-15
+
+The user tested a previously downloaded local ZIP and reported that extra voting repeated the same limited meme pool, daily progress remained at 10/10, sharing still appeared broken, and the vote-confirmation box lacked visibility. EXPLAINED remained correct. The old ZIP did not contain the branch's prior extra-count/share fixes; downloaded files do not update automatically.
+
+Product decision: optional endless extra rounds were removed. Repetition after the daily achievement weakens the finite daily loop and reduces the reason to return. Daily Meme Battle now ends at ten confirmed votes and displays: `Come back tomorrow for fresh matchups.`
+
+The 10/10 result intentionally persists through refresh in the same browser and UTC day. This prevents refreshing from resetting or farming the daily goal.
+
+Frontend changes:
+
+- Removed the `Keep battling` action from the completed result.
+- Preserved the result card, share action, backed meme and leaderboard.
+- Increased the vote-feedback box size, border contrast, background contrast, weight and shadow.
+- Kept the previously implemented native-share, Clipboard API, legacy-copy and manual-prompt fallbacks.
+- Did not change database permissions. The verified legacy-write lockdown remains active.
+
+GitHub initially blocked replacement of the large legacy single-file bundle because unrelated dormant direct Supabase write code still exists elsewhere in V5.2. The user explicitly approved replacing the current branch HTML for these scoped Battle changes while requiring the database permissions to remain locked.
+
+Verification:
+
+- Updated the mocked suite with a `daily session stops at ten` assertion.
+- All 43 assertions passed against the current GitHub HTML.
+- Commits: `eb2caf5e897aa07842bac66143971a4be3af18f5` (frontend) and `589fa76edf0621672b0cd01c104b0f23847bd91f` (test).
+- No production deployment was performed.
+
+A valid retest requires downloading a fresh ZIP of `codex/battle-arena-v6`; the user's existing local folder will not receive these commits.
