@@ -782,3 +782,10 @@ The user confirmed both target-project settings were enabled after the frontend 
 - Authentication → Bot and Abuse Protection: enabled with Cloudflare Turnstile and the private Turnstile secret.
 
 The secret value was not shared in the conversation or repository. Configuration presence is user-reported and has not yet been verified by a live anonymous signup or vote. The next release gate is a Cloudflare preview deployment on an allowlisted Turnstile hostname, followed by an incognito vote test and database confirmation.
+
+
+### Localhost Turnstile test hostname — 2026-09-15
+
+Cloudflare Pages inspection showed the site is manually deployed and is not connected to its Git repository. All visible deployments were production uploads from `main`; no PR/branch preview exists. Connecting Git at this stage was rejected as unsafe because it could redeploy a repository version that has not been proven identical to the current live bundle.
+
+The user added `localhost` to the existing Cloudflare Turnstile widget's allowed hostnames, while retaining production hostnames. This permits a local HTTP server to test the branch frontend against real Supabase Auth and voting without changing the live website. Remove `localhost` from the widget after testing is complete.
