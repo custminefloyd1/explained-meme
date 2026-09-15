@@ -401,9 +401,9 @@ function ArenaV6(){
  const dayLeft=Math.max(0,Date.parse(today+"T00:00:00Z")+86400000-clock);
  function back(m){const selected={id:m.id,title:m.title,rank:m.rank,week_start:meta?.week_start};setBacked(selected);save("arena-v7-backed",selected);setNotice((localPreview?"Demo: ":"")+"You're backing "+m.title+".")}
  function share(){
-   const u=new URL("https://explained.meme/");u.hash="battle";
+   const u="https://explained.meme/#battle";
    const text=localPreview?"I'm testing the Daily Meme Battle demo.":alignment===null?"I picked today's funniest memes. Your turn.":"I picked the crowd's favourite in "+alignment+"% of "+comparable.length+" comparable battles. What's your taste?";
-   setShareText(text+(localPreview?"":" "+u.href));
+   setShareText(text+(localPreview?"":" "+u));
  }
  async function copyShare(){
    try{
