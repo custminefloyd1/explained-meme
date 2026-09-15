@@ -624,3 +624,12 @@ Completed repository-only preparation; no Supabase SQL was executed.
 - Attempted to run the existing mocked frontend suite against files fetched from GitHub. The transient runner could not ingest the large single-file HTML reliably, so this attempt was inconclusive rather than a pass. The SQL-only change does not alter frontend code, but the suite must still be rerun from a normal repository checkout before release.
 
 Current safe execution order remains: importer prerequisite, V7 migration, post-migration check, controlled seed/import test, then Auth/CAPTCHA integration. Do not merge or deploy yet.
+
+
+### Importer prerequisite applied — 2026-09-15
+
+The user ran `supabase/arena-v6-import.sql` in the target Supabase project and reported: `Success. No rows returned`.
+
+This is the expected SQL Editor result for the successful transactional DDL. It indicates no execution error was reported; it does not independently prove every object exists. Presence of `reddit_id`, `reddit_score`, `source`, and the unique Reddit-ID index will be verified by the post-migration check after the V7 migration.
+
+No importer function was deployed, no memes were imported, and Auth/CAPTCHA remain disabled.
