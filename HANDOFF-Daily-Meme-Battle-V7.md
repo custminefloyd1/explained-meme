@@ -1354,3 +1354,26 @@ Commits:
 - Regression guard: `29eae1c6167d8d3b1d5230364735ad2689d8eb46`.
 
 The old embedded Screensaver render branch remains dormant inside the legacy bundle; the public navigation no longer reaches it.
+
+
+### Screensaver fullscreen ratio and speed controls corrected — 2026-09-15
+
+Local testing found that fullscreen images appeared stretched. The viewer previously assigned both `width:100%` and `height:100%` before applying `object-fit:contain`. Although contain should normally preserve ratio, intrinsic image sizing is more robust across fullscreen browser implementations.
+
+Changed fullscreen images to `width:auto; height:auto; max-width:100vw; max-height:100vh; object-fit:contain`. The image now scales within the viewport without forcing both axes.
+
+Replaced the previous 8/15/30-second timing choices with exactly:
+
+- 3 seconds.
+- 5 seconds.
+- 10 seconds (default).
+- 30 seconds.
+
+Regression checks require intrinsic fullscreen sizing, forbid the previous forced dimensions and require the exact new timing set. The committed script parses successfully.
+
+Commits:
+
+- Screensaver: `183926bd3c4eb1a142be20ed42e41520a85bfeca`.
+- Tests: `13ecfb3cfe45e020d757c3b54ac1e30ac05b307c`.
+
+No main navigation, database or permission logic changed.
