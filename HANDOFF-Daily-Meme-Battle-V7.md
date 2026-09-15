@@ -713,3 +713,10 @@ A Functions-list screenshot verified the final deployment-name state:
 - The screenshot showed exactly one Edge Function in the project.
 
 This corrects the prior uncertain deployment record. Runtime invocation, JWT-verification configuration, external source access, database inserts, and function logs remain unverified.
+
+
+### Importer unauthorized-access test passed — 2026-09-15
+
+After disabling legacy JWT verification, the user invoked `arena-import-v6` with an unauthenticated POST request and received HTTP 401 with body `Unauthorized`. The response included a Deno execution ID, confirming the request reached the Edge Function and was rejected by its custom-secret check.
+
+The user then accidentally entered the example JSON response at the shell prompt, producing a local zsh `no matches found` error. That shell error is unrelated to Supabase. An authorized importer invocation has not yet been demonstrated.
