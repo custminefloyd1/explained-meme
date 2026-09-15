@@ -729,3 +729,14 @@ The first authorized POST reached the function and returned `{"inserted":0,"fail
 Live MemeAPI response inspection identified the cause: current `postLink` values use the short form `https://redd.it/<reddit_id>`, while the importer accepted only `reddit.com/.../comments/<reddit_id>`. Every otherwise-valid candidate was filtered out without being classified as a source failure.
 
 The importer was patched to accept and parse both allowlisted Reddit URL formats while still rejecting unrelated hosts. The corrected version must be redeployed before retesting.
+
+
+### Authorized importer runtime test passed — 2026-09-15
+
+After redeploying the short-link parser fix, the user invoked `arena-import-v6` with the configured custom secret. The function returned:
+
+```json
+{"inserted":15,"failures":[]}
+```
+
+This verifies custom-secret authentication, Edge Function execution, MemeAPI access, candidate filtering, admin database access, and insertion of 15 rows without reported subreddit-source failures. A follow-up database query is still required to confirm those rows have `kind='trending'`, non-null Reddit IDs, current timestamps, valid HTTPS images, and appear in `arena_standings_v7`.
