@@ -849,3 +849,12 @@ The migration:
 Compatibility impact is intentional: any remaining legacy browser code that directly updates `memes.elo`, `wins`, `losses`, or other meme fields will stop persisting. Daily Meme Battle V7 is unaffected because it votes through `arena_vote_v7`. The server importer is unaffected because it uses the admin client. Browser uploads to Templates are intentionally disabled because the uploader was removed.
 
 Next action: run the complete lockdown SQL in Supabase SQL Editor, then rerun `supabase/arena-v7-legacy-write-preflight.sql` and return its CSV for verification.
+
+
+### Legacy public-write lockdown executed — 2026-09-15
+
+The user ran the complete `supabase/arena-v7-lockdown-legacy-writes.sql` migration in the target Supabase project and reported `Success. No rows returned`.
+
+This means Supabase reported no SQL execution error and the migration's fail-closed assertions did not abort the transaction. It is strong evidence that the identified public `memes` write privileges/policies and public Storage write policies were removed, while intended reads were preserved.
+
+This result is not the final independent verification. The next required action is to rerun `supabase/arena-v7-legacy-write-preflight.sql`, export the single result row as CSV, and verify the post-lockdown policy/grant state.
