@@ -7,7 +7,7 @@ const checks=[
  ["success follows awaited RPC",html.includes("const saved=await r.json()")&&html.includes("Rating confirmed")],
  ["Turnstile token is sent",html.includes("gotrue_meta_security:{captcha_token:await captcha()}")],
  ["anonymous session is reused",html.includes('localStorage.getItem("arena-v6-session")')],
- ["double submit guard exists",html.includes("if(state.busy||!current())return")],
+ ["double submit guard exists",html.includes("if(state.busy||!current())return")],\n ["rate-limit failure is actionable",html.includes("You’re rating very quickly. Wait one minute, then retry this picture.")],
  ["daily limit is 25",html.includes("LIMIT=25")],
  ["5 10 25 milestones exist",html.includes("5 QUICK")&&html.includes("10 SOLID")&&html.includes("25 CLEARED")],
  ["daily progress persists",html.includes('certified-funny-v1-progress')],
