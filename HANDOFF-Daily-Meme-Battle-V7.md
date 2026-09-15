@@ -858,3 +858,23 @@ The user ran the complete `supabase/arena-v7-lockdown-legacy-writes.sql` migrati
 This means Supabase reported no SQL execution error and the migration's fail-closed assertions did not abort the transaction. It is strong evidence that the identified public `memes` write privileges/policies and public Storage write policies were removed, while intended reads were preserved.
 
 This result is not the final independent verification. The next required action is to rerun `supabase/arena-v7-legacy-write-preflight.sql`, export the single result row as CSV, and verify the post-lockdown policy/grant state.
+
+
+### Post-lockdown security verification passed — 2026-09-15
+
+The user reran `supabase/arena-v7-legacy-write-preflight.sql` after executing the lockdown and returned the CSV generated at `2026-09-15 12:24:33+00`.
+
+Verified final state:
+
+- `public.memes` now has exactly one relevant policy: public SELECT through `public_read_memes_table`.
+- `anon` and `authenticated` now have only SELECT on `public.memes`.
+- The public INSERT policy and both public UPDATE policies are absent.
+- All direct INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, and TRIGGER privileges on `public.memes` are absent for both client roles.
+- Both Storage INSERT policies are absent, including the unscoped `WITH CHECK (true)` policy.
+- Only Storage SELECT policies remain for the inspected buckets.
+- The standard direct grants on `storage.objects` remain. This is expected in Supabase: RLS controls API access, and no client-facing write policy now authorizes uploads or mutations.
+- Bucket configuration is unchanged: `memes` and `Templates` are public, while `Trending` is private.
+
+The identified legacy public-write exposure is closed. Public reads remain available. Daily Meme Battle V7 RPC voting and the admin importer are not dependent on the removed permissions.
+
+Remaining release work is separate: retest the branch in the browser after the share/extra-round fixes, configure automatic importer scheduling, test season finalization, and establish a safe Cloudflare deployment path.
