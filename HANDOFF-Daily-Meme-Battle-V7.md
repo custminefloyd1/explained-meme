@@ -669,3 +669,19 @@ Before deploying the Edge Function, its insert payload was compared with the ver
 - The importer supplied an `origin` property, but the verified table has no `origin` column. That unsupported property was removed.
 
 Without these corrections, the PostgREST insert would have been rejected. The Edge Function is still not deployed and has not been invoked against MemeAPI or the database.
+
+
+### Current Edge Functions editor compatibility — 2026-09-15
+
+The user supplied a screenshot of the current Supabase browser editor. Its active entry point is `index.ts` and its runtime uses the current `@supabase/server` `withSupabase` handler format. The user had added a separate `arena-import-v6.ts` file while `index.ts` still contained the Hello World template; that extra file would not execute.
+
+The repository importer was updated to the current runtime format:
+
+- `index.ts` is the intended entry point.
+- Uses `withSupabase({ auth: "none" })`.
+- Requires JWT verification to be disabled at deployment.
+- Performs its own request authentication using the high-entropy `ARENA_IMPORT_SECRET` and `x-arena-import-secret` header.
+- Uses the runtime-provided `ctx.supabaseAdmin` client, so project URL and database secret-key environment variables do not need to be manually copied into function secrets.
+- Uses an idempotent `reddit_id` upsert with duplicate ignoring.
+
+The function has still not been deployed or invoked.
