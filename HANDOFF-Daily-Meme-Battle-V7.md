@@ -1184,3 +1184,20 @@ Updated `supabase/certified-funny-remove-stale-metadata.sql` to delete only the 
 Correction commit: `a9b03c86f60d2612997e6ae634dd1960e4f17c89`.
 
 Next: rerun the updated cleanup file, then rerun `supabase/certified-funny-import-check.sql`. Expected counts remain 50 / 50 / 50 / 0 / 0.
+
+
+### Certified Funny clean inventory verified — 2026-09-15
+
+The user ran the corrected cleanup and returned the final `certified-funny-import-check.sql` result generated at `2026-09-15 16:57:08+00`.
+
+Verified counts:
+
+- Storage objects: 50.
+- Funny metadata rows: 50.
+- Supported Storage images: 50.
+- Supported images missing metadata: 0.
+- Malformed imported rows: 0.
+
+The previous 50 unusable null-source/null-image orphan rows are gone. The current 50-image owner inventory and its metadata are aligned. No database permissions were opened or changed by this cleanup.
+
+Next release gate: browser-test `http://localhost:8000/certified-funny.html`; verify all images load, one 1–10 rating receives server confirmation, the aggregate changes, refresh preserves the server result, and a second same-day rating on the same picture is rejected.
