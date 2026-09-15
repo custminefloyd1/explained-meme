@@ -1007,3 +1007,27 @@ The user ran the complete `supabase/certified-funny-v1.sql` migration in the tar
 This means Supabase reported no SQL error and the migration's fail-closed permission assertions did not abort the transaction. The secure rating table and RPC are expected to be installed, with no direct client-table access and no reopening of legacy `public.memes` writes.
 
 This is not yet a completed Certified Funny release. The current frontend still uses the broken legacy direct-PATCH handler and must be replaced with the authenticated `certified_funny_rate_v1` RPC before deployment. Runtime persistence, duplicate-vote handling, error display and concurrent ratings remain to be tested.
+
+
+### Certified Funny product and monetization clarification — 2026-09-15
+
+User clarified:
+
+- Certified Funny contains a personal archive of funny pictures saved over many years from many sources.
+- The desired rating inventory is larger than the Battle: approximately 25 available ratings per day.
+- Licensing/provenance of the saved images is unknown.
+- The long-term objective is passive income, potentially involving a screensaver product.
+
+Product direction recorded:
+
+- Treat 25 as the available daily deck, not a mandatory completion threshold.
+- Use progressive milestones at 5, 10 and 25 ratings to serve both casual and heavy visitors.
+- Certified Funny should provide immediate comparison, rating progress, favourites and taste/profile rewards after sufficient data.
+- Daily Meme Battle drives repeat visits; Certified Funny gathers evergreen preference data; EXPLAINED drives discovery; a rights-safe screensaver is the potential paid conversion.
+- Do not sell or redistribute the existing unknown-rights image archive. Saved/downloaded status does not establish commercial reproduction rights.
+- The safest initial paid product is screensaver software with bring-your-own-folder support, plus only original, public-domain or explicitly commercially licensed starter content.
+- Validate demand with a waitlist or preorder before building a native screensaver application.
+- Advertising is a traffic-scale model, not a credible early primary revenue source.
+- Revenue forecasts must be scenario-based until real monthly users, pageviews, geography, return rates and conversion data exist.
+
+The secure Certified Funny backend has been installed, but the frontend RPC integration remains blocked pending explicit user approval for another replacement of the legacy single-file HTML.
