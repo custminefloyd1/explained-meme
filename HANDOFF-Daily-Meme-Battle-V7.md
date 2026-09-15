@@ -1377,3 +1377,43 @@ Commits:
 - Tests: `13ecfb3cfe45e020d757c3b54ac1e30ac05b307c`.
 
 No main navigation, database or permission logic changed.
+
+
+### Contact V1 honest delivery system prepared — 2026-09-15
+
+The legacy embedded Contact form was diagnosed as non-functional and dishonest:
+
+- It used Netlify form attributes while the site is hosted on Cloudflare Pages.
+- It POSTed URL-encoded data to `/`, where no contact processor exists.
+- It never checked `response.ok`.
+- Its exception path still set the success state and displayed `Message sent! (preview mode)`.
+- Therefore the UI could claim delivery when no email was sent.
+
+Prepared a standalone replacement, not yet connected to main navigation:
+
+- `explained meme/contact.html`: secure form with real pending/error/success states; success appears only after the Edge Function returns `accepted:true`.
+- `supabase/functions/contact-v1/index.ts`: authenticated Supabase Edge Function that validates the user's live anonymous token and sends through Resend.
+- `supabase/contact-v1.sql`: private RLS-enabled delivery metadata table with all client access revoked.
+- `tests/contact-v1.test.mjs`: regression guards for honest confirmation, authentication, secret isolation, validation, rate limiting, idempotency and locked metadata.
+- `CONTACT-V1-SETUP.md`: exact owner setup and inbox-test steps.
+
+Security and reliability properties:
+
+- Resend API key and destination/sender addresses exist only as Edge Function secrets.
+- Resend idempotency key prevents duplicate delivery when a request is retried.
+- Limits are three accepted/pending messages per 15 minutes and ten per 24 hours per authenticated anonymous identity.
+- Honeypot, client/server length validation and restricted subject values are included.
+- CORS is limited to production, localhost and this project's Pages preview pattern.
+- Only request ID, anonymous sender ID, status, provider message ID and timestamps are stored; visitor name, email and message body are not stored in the site database.
+- No direct client database writes are permitted.
+- The committed standalone page script parses successfully and static security checks pass.
+
+Commits:
+
+- SQL metadata migration: `a7a8781f87552542b31daaf4315f11d21c1c1e0c`.
+- Edge Function: `93739cfdc2452c57512edc3d59325110ecd27a56`.
+- Contact page: `2745101643ddc7c88113ffefe7e931641c41cc1a`.
+- Regression tests: `e76dfece9e3f70629e3e91abd45df7ec77b83222`.
+- Setup guide: `6b99a6f938eb4a5418c00a4311e887a2712bbc83`.
+
+External setup remains mandatory: verify `explained.meme` in Resend, create the sending API key, add `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` as Supabase secrets, run the SQL, deploy `contact-v1`, and prove delivery in Resend Logs and the real inbox. Main navigation must remain on the legacy page until that test passes.
