@@ -5,6 +5,7 @@ if(html.includes('setNotice("Result copied. Paste it wherever you want.");setSha
 if(!html.includes('copied?"Copied!":"Copy result"'))throw Error('Copied confirmation state missing');
 if(!html.includes('if(m.id==="CERTIFIED_FUNNY"){window.location.href="certified-funny.html";return}'))throw Error('Certified Funny navigation is not connected to the secure standalone page');
 if(!html.includes('if(m.id==="SCREENSAVER"){window.location.href="screensaver.html";return}'))throw Error('Screensaver navigation is not connected to the standalone viewer');
+if(!html.includes('if(m.id==="CONTACT"){window.location.href="contact.html";return}'))throw Error('Contact navigation is not connected to the verified standalone form');
 const start=html.indexOf('/* Battle Arena v6:');
 const end=html.indexOf('\nfunction Ti(){',start);
 if(start<0||end<0)throw Error('Component missing');
