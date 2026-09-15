@@ -740,3 +740,16 @@ After redeploying the short-link parser fix, the user invoked `arena-import-v6` 
 ```
 
 This verifies custom-secret authentication, Edge Function execution, MemeAPI access, candidate filtering, admin database access, and insertion of 15 rows without reported subreddit-source failures. A follow-up database query is still required to confirm those rows have `kind='trending'`, non-null Reddit IDs, current timestamps, valid HTTPS images, and appear in `arena_standings_v7`.
+
+
+### Imported Battle eligibility verified — 2026-09-15
+
+The user ran the post-import eligibility query. Verified counts:
+
+- Total memes: 29
+- `kind='trending'` memes: 15
+- Rows with non-null `reddit_id`: 15
+- Reddit imports with valid HTTPS images: 15
+- Rows returned by current-week `arena_standings_v7(arena_week_v7())`: 15
+
+The complete sourcing-to-standings path is therefore working for the first controlled import. Automatic scheduling is not configured yet. Anonymous Auth, CAPTCHA, real client voting, concurrency, and weekly finalization remain unverified.
