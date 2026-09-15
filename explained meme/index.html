@@ -210,59 +210,6 @@ div.overflow-x-auto { display: none !important; }
 </head>
 <body>
 
-<div id="explained-upload" style="display:none;max-width:1200px;margin:0 auto;padding:20px 20px 0 20px;font-family:monospace;">
-  <div id="admin-gate" style="border:1px solid #27272a;background:#09090b;border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-    <span style="font-size:11px;color:#a1a1aa;">Admin mode — only visible with <b style="color:#d4ff00;">?admin</b> in URL</span>
-    <span style="font-size:10px;color:#52525b;">Ctrl+Shift+A to toggle • No more deploys after this, content is live from Supabase</span>
-  </div>
-  <div style="border:1px solid #27272a;background:rgba(24,24,27,0.5);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <div style="font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fff;">Add to Explained — Templates (REAL SCHEMA)</div>
-      <div style="font-size:10px;color:#71717a;">Writes to public.memes as image_uri • tags=[meme]</div>
-    </div>
-    <div style="display:grid;grid-template-columns:220px 1fr;gap:16px;">
-      <div id="drop-zone" style="position:relative;border:1px dashed #3f3f46;border-radius:8px;padding:12px;background:#09090b;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;">
-        <input type="file" id="file-input" accept="image/*" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:10;">
-        <div id="drop-text" style="text-align:center;pointer-events:none;z-index:1;">
-          <div style="font-size:24px;margin-bottom:8px;">📁</div>
-          <div style="font-size:11px;color:#a1a1aa;">Click or drag image here</div>
-          <div style="margin-top:10px;display:inline-block;background:#27272a;padding:6px 14px;border-radius:6px;font-size:11px;color:#fff;border:1px solid #3f3f46;">Choose file</div>
-        </div>
-        <img id="preview" style="display:none;max-height:140px;max-width:100%;border-radius:6px;z-index:1;pointer-events:none;">
-        <div id="file-info" style="display:none;font-size:10px;color:#a3e635;margin-top:8px;text-align:center;word-break:break-all;z-index:1;pointer-events:none;"></div>
-        <button id="clear-file" type="button" style="display:none;position:absolute;top:6px;right:6px;z-index:20;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #3f3f46;border-radius:50%;width:24px;height:24px;font-size:12px;cursor:pointer;">✕</button>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <input id="up-title" placeholder="Title (e.g. Sigma Grindset)" style="width:100%;height:36px;background:#09090b;border:1px solid #27272a;border-radius:6px;padding:0 12px;font-size:13px;color:#fff;outline:none;">
-        <textarea id="up-meaning" placeholder="Meaning (what it actually means)" rows="2" style="width:100%;background:#09090b;border:1px solid #27272a;border-radius:6px;padding:8px 12px;font-size:13px;color:#fff;resize:vertical;outline:none;"></textarea>
-        <div style="display:flex;gap:8px;">
-          <input id="up-origin" placeholder="Origin (e.g. TikTok 2021)" style="flex:1;height:36px;background:#09090b;border:1px solid #27272a;border-radius:6px;padding:0 12px;font-size:13px;color:#fff;outline:none;">
-          <input id="up-example" placeholder="Example: 'Only in Ohio...'" style="flex:1;height:36px;background:#09090b;border:1px solid #27272a;border-radius:6px;padding:0 12px;font-size:13px;color:#fff;outline:none;">
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <select id="up-tag" style="flex:1;height:36px;background:#09090b;border:1px solid #27272a;border-radius:6px;padding:0 12px;font-size:13px;color:#fff;outline:none;">
-            <option value="reaction">reaction</option>
-            <option value="wholesome">wholesome</option>
-            <option value="cursed">cursed</option>
-            <option value="meta">meta</option>
-            <option value="format">format</option>
-            <option value="political">political</option>
-            <option value="absurdist">absurdist</option>
-            <option value="meme" selected>meme (Explained)</option>
-          </select>
-          <div style="flex:1;font-size:10px;color:#52525b;">Tag = filter in EXPLAINED.</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
-          <button id="up-btn" type="button" style="height:38px;padding:0 18px;background:#d4ff00;color:#000;font-size:12px;font-weight:700;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;">Add to Explained</button>
-          <span id="up-msg" style="font-size:11px;color:#a1a1aa;word-break:break-word;"></span>
-        </div>
-        <div id="schema-help" style="font-size:10px;color:#f59e0b;margin-top:4px;display:none;line-height:1.4;"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
   <div id="root"></div>
   
   <script type="module">var Jf=Object.create;var{getPrototypeOf:Wf,defineProperty:hu,getOwnPropertyNames:Kf}=Object;var If=Object.prototype.hasOwnProperty;var Ht=(e,t,n)=>{n=e!=null?Jf(Wf(e)):{};let r=t||!e||!e.__esModule?hu(n,"default",{value:e,enumerable:!0}):n;for(let l of Kf(e))if(!If.call(r,l))hu(r,l,{get:()=>e[l],enumerable:!0});return r};var Wr=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports);var Pf=(e,t)=>{for(var n in t)hu(e,n,{get:t[n],enumerable:!0,configurable:!0,set:(r)=>t[n]=()=>r})};var Rf=(e,t)=>()=>(e&&(t=e(e=0)),t);var Tn=Wr((ad)=>{var On=Symbol.for("react.element"),Mf=Symbol.for("react.portal"),Gf=Symbol.for("react.fragment"),bf=Symbol.for("react.strict_mode"),Yf=Symbol.for("react.profiler"),jf=Symbol.for("react.provider"),_f=Symbol.for("react.context"),$f=Symbol.for("react.forward_ref"),ed=Symbol.for("react.suspense"),td=Symbol.for("react.memo"),nd=Symbol.for("react.lazy"),Mi=Symbol.iterator;function rd(e){if(e===null||typeof e!=="object")return null;return e=Mi&&e[Mi]||e["@@iterator"],typeof e==="function"?e:null}var Yi={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}},ji=Object.assign,_i={};function $t(e,t,n){this.props=e,this.context=t,this.refs=_i,this.updater=n||Yi}$t.prototype.isReactComponent={};$t.prototype.setState=function(e,t){if(typeof e!=="object"&&typeof e!=="function"&&e!=null)throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");this.updater.enqueueSetState(this,e,t,"setState")};$t.prototype.forceUpdate=function(e){this.updater.enqueueForceUpdate(this,e,"forceUpdate")};function $i(){}$i.prototype=$t.prototype;function vu(e,t,n){this.props=e,this.context=t,this.refs=_i,this.updater=n||Yi}var yu=vu.prototype=new $i;yu.constructor=vu;ji(yu,$t.prototype);yu.isPureReactComponent=!0;var Gi=Array.isArray,ea=Object.prototype.hasOwnProperty,Au={current:null},ta={key:!0,ref:!0,__self:!0,__source:!0};function na(e,t,n){var r,l={},u=null,o=null;if(t!=null)for(r in t.ref!==void 0&&(o=t.ref),t.key!==void 0&&(u=""+t.key),t)ea.call(t,r)&&!ta.hasOwnProperty(r)&&(l[r]=t[r]);var i=arguments.length-2;if(i===1)l.children=n;else if(1<i){for(var a=Array(i),d=0;d<i;d++)a[d]=arguments[d+2];l.children=a}if(e&&e.defaultProps)for(r in i=e.defaultProps,i)l[r]===void 0&&(l[r]=i[r]);return{$$typeof:On,type:e,key:u,ref:o,props:l,_owner:Au.current}}function ld(e,t){return{$$typeof:On,type:e.type,key:t,ref:e.ref,props:e.props,_owner:e._owner}}function Eu(e){return typeof e==="object"&&e!==null&&e.$$typeof===On}function ud(e){var t={"=":"=0",":":"=2"};return"$"+e.replace(/[=:]/g,function(n){return t[n]})}var bi=/\/+/g;function gu(e,t){return typeof e==="object"&&e!==null&&e.key!=null?ud(""+e.key):t.toString(36)}function Ir(e,t,n,r,l){var u=typeof e;if(u==="undefined"||u==="boolean")e=null;var o=!1;if(e===null)o=!0;else switch(u){case"string":case"number":o=!0;break;case"object":switch(e.$$typeof){case On:case Mf:o=!0}}if(o)return o=e,l=l(o),e=r===""?"."+gu(o,0):r,Gi(l)?(n="",e!=null&&(n=e.replace(bi,"$&/")+"/"),Ir(l,t,n,"",function(d){return d})):l!=null&&(Eu(l)&&(l=ld(l,n+(!l.key||o&&o.key===l.key?"":(""+l.key).replace(bi,"$&/")+"/")+e)),t.push(l)),1;if(o=0,r=r===""?".":r+":",Gi(e))for(var i=0;i<e.length;i++){u=e[i];var a=r+gu(u,i);o+=Ir(u,t,n,a,l)}else if(a=rd(e),typeof a==="function")for(e=a.call(e),i=0;!(u=e.next()).done;)u=u.value,a=r+gu(u,i++),o+=Ir(u,t,n,a,l);else if(u==="object")throw t=String(e),Error("Objects are not valid as a React child (found: "+(t==="[object Object]"?"object with keys {"+Object.keys(e).join(", ")+"}":t)+"). If you meant to render a collection of children, use an array instead.");return o}function Kr(e,t,n){if(e==null)return e;var r=[],l=0;return Ir(e,r,"","",function(u){return t.call(n,u,l++)}),r}function od(e){if(e._status===-1){var t=e._result;t=t(),t.then(function(n){if(e._status===0||e._status===-1)e._status=1,e._result=n},function(n){if(e._status===0||e._status===-1)e._status=2,e._result=n}),e._status===-1&&(e._status=0,e._result=t)}if(e._status===1)return e._result.default;throw e._result}var ae={current:null},Pr={transition:null},id={ReactCurrentDispatcher:ae,ReactCurrentBatchConfig:Pr,ReactCurrentOwner:Au};function ra(){throw Error("act(...) is not supported in production builds of React.")}ad.Children={map:Kr,forEach:function(e,t,n){Kr(e,function(){t.apply(this,arguments)},n)},count:function(e){var t=0;return Kr(e,function(){t++}),t},toArray:function(e){return Kr(e,function(t){return t})||[]},only:function(e){if(!Eu(e))throw Error("React.Children.only expected to receive a single React element child.");return e}};ad.Component=$t;ad.Fragment=Gf;ad.Profiler=Yf;ad.PureComponent=vu;ad.StrictMode=bf;ad.Suspense=ed;ad.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED=id;ad.act=ra;ad.cloneElement=function(e,t,n){if(e===null||e===void 0)throw Error("React.cloneElement(...): The argument must be a React element, but you passed "+e+".");var r=ji({},e.props),l=e.key,u=e.ref,o=e._owner;if(t!=null){if(t.ref!==void 0&&(u=t.ref,o=Au.current),t.key!==void 0&&(l=""+t.key),e.type&&e.type.defaultProps)var i=e.type.defaultProps;for(a in t)ea.call(t,a)&&!ta.hasOwnProperty(a)&&(r[a]=t[a]===void 0&&i!==void 0?i[a]:t[a])}var a=arguments.length-2;if(a===1)r.children=n;else if(1<a){i=Array(a);for(var d=0;d<a;d++)i[d]=arguments[d+2];r.children=i}return{$$typeof:On,type:e.type,key:l,ref:u,props:r,_owner:o}};ad.createContext=function(e){return e={$$typeof:_f,_currentValue:e,_currentValue2:e,_threadCount:0,Provider:null,Consumer:null,_defaultValue:null,_globalName:null},e.Provider={$$typeof:jf,_context:e},e.Consumer=e};ad.createElement=na;ad.createFactory=function(e){var t=na.bind(null,e);return t.type=e,t};ad.createRef=function(){return{current:null}};ad.forwardRef=function(e){return{$$typeof:$f,render:e}};ad.isValidElement=Eu;ad.lazy=function(e){return{$$typeof:nd,_payload:{_status:-1,_result:e},_init:od}};ad.memo=function(e,t){return{$$typeof:td,type:e,compare:t===void 0?null:t}};ad.startTransition=function(e){var t=Pr.transition;Pr.transition={};try{e()}finally{Pr.transition=t}};ad.unstable_act=ra;ad.useCallback=function(e,t){return ae.current.useCallback(e,t)};ad.useContext=function(e){return ae.current.useContext(e)};ad.useDebugValue=function(){};ad.useDeferredValue=function(e){return ae.current.useDeferredValue(e)};ad.useEffect=function(e,t){return ae.current.useEffect(e,t)};ad.useId=function(){return ae.current.useId()};ad.useImperativeHandle=function(e,t,n){return ae.current.useImperativeHandle(e,t,n)};ad.useInsertionEffect=function(e,t){return ae.current.useInsertionEffect(e,t)};ad.useLayoutEffect=function(e,t){return ae.current.useLayoutEffect(e,t)};ad.useMemo=function(e,t){return ae.current.useMemo(e,t)};ad.useReducer=function(e,t,n){return ae.current.useReducer(e,t,n)};ad.useRef=function(e){return ae.current.useRef(e)};ad.useState=function(e){return ae.current.useState(e)};ad.useSyncExternalStore=function(e,t,n){return ae.current.useSyncExternalStore(e,t,n)};ad.useTransition=function(){return ae.current.useTransition()};ad.version="18.3.1"});var ca=Wr((Rd)=>{function Lu(e,t){var n=e.length;e.push(t);e:for(;0<n;){var r=n-1>>>1,l=e[r];if(0<Rr(l,t))e[r]=t,e[n]=l,n=r;else break e}}function Se(e){return e.length===0?null:e[0]}function Yr(e){if(e.length===0)return null;var t=e[0],n=e.pop();if(n!==t){e[0]=n;e:for(var r=0,l=e.length,u=l>>>1;r<u;){var o=2*(r+1)-1,i=e[o],a=o+1,d=e[a];if(0>Rr(i,n))a<l&&0>Rr(d,i)?(e[r]=d,e[a]=n,r=a):(e[r]=i,e[o]=n,r=o);else if(a<l&&0>Rr(d,n))e[r]=d,e[a]=n,r=a;else break e}}return t}function Rr(e,t){var n=e.sortIndex-t.sortIndex;return n!==0?n:e.id-t.id}if(typeof performance==="object"&&typeof performance.now==="function")Cu=performance,Rd.unstable_now=function(){return Cu.now()};else Mr=Date,wu=Mr.now(),Rd.unstable_now=function(){return Mr.now()-wu};var Cu,Mr,wu,Ke=[],st=[],Pd=1,we=null,re=3,jr=!1,xt=!1,Jn=!1,ua=typeof setTimeout==="function"?setTimeout:null,oa=typeof clearTimeout==="function"?clearTimeout:null,la=typeof setImmediate<"u"?setImmediate:null;typeof navigator<"u"&&navigator.scheduling!==void 0&&navigator.scheduling.isInputPending!==void 0&&navigator.scheduling.isInputPending.bind(navigator.scheduling);function qu(e){for(var t=Se(st);t!==null;){if(t.callback===null)Yr(st);else if(t.startTime<=e)Yr(st),t.sortIndex=t.expirationTime,Lu(Ke,t);else break;t=Se(st)}}function Vu(e){if(Jn=!1,qu(e),!xt)if(Se(Ke)!==null)xt=!0,Bu(Qu);else{var t=Se(st);t!==null&&Uu(Vu,t.startTime-e)}}function Qu(e,t){xt=!1,Jn&&(Jn=!1,oa(Wn),Wn=-1),jr=!0;var n=re;try{qu(t);for(we=Se(Ke);we!==null&&(!(we.expirationTime>t)||e&&!sa());){var r=we.callback;if(typeof r==="function"){we.callback=null,re=we.priorityLevel;var l=r(we.expirationTime<=t);t=Rd.unstable_now(),typeof l==="function"?we.callback=l:we===Se(Ke)&&Yr(Ke),qu(t)}else Yr(Ke);we=Se(Ke)}if(we!==null)var u=!0;else{var o=Se(st);o!==null&&Uu(Vu,o.startTime-t),u=!1}return u}finally{we=null,re=n,jr=!1}}var _r=!1,Gr=null,Wn=-1,ia=5,aa=-1;function sa(){return Rd.unstable_now()-aa<ia?!1:!0}function Nu(){if(Gr!==null){var e=Rd.unstable_now();aa=e;var t=!0;try{t=Gr(!0,e)}finally{t?Zn():(_r=!1,Gr=null)}}else _r=!1}var Zn;if(typeof la==="function")Zn=function(){la(Nu)};else if(typeof MessageChannel<"u")br=new MessageChannel,Du=br.port2,br.port1.onmessage=Nu,Zn=function(){Du.postMessage(null)};else Zn=function(){ua(Nu,0)};var br,Du;function Bu(e){Gr=e,_r||(_r=!0,Zn())}function Uu(e,t){Wn=ua(function(){e(Rd.unstable_now())},t)}Rd.unstable_IdlePriority=5;Rd.unstable_ImmediatePriority=1;Rd.unstable_LowPriority=4;Rd.unstable_NormalPriority=3;Rd.unstable_Profiling=null;Rd.unstable_UserBlockingPriority=2;Rd.unstable_cancelCallback=function(e){e.callback=null};Rd.unstable_continueExecution=function(){xt||jr||(xt=!0,Bu(Qu))};Rd.unstable_forceFrameRate=function(e){0>e||125<e?console.error("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported"):ia=0<e?Math.floor(1000/e):5};Rd.unstable_getCurrentPriorityLevel=function(){return re};Rd.unstable_getFirstCallbackNode=function(){return Se(Ke)};Rd.unstable_next=function(e){switch(re){case 1:case 2:case 3:var t=3;break;default:t=re}var n=re;re=t;try{return e()}finally{re=n}};Rd.unstable_pauseExecution=function(){};Rd.unstable_requestPaint=function(){};Rd.unstable_runWithPriority=function(e,t){switch(e){case 1:case 2:case 3:case 4:case 5:break;default:e=3}var n=re;re=e;try{return t()}finally{re=n}};Rd.unstable_scheduleCallback=function(e,t,n){var r=Rd.unstable_now();switch(typeof n==="object"&&n!==null?(n=n.delay,n=typeof n==="number"&&0<n?r+n:r):n=r,e){case 1:var l=-1;break;case 2:l=250;break;case 5:l=1073741823;break;case 4:l=1e4;break;default:l=5000}return l=n+l,e={id:Pd++,callback:t,priorityLevel:e,startTime:n,expirationTime:l,sortIndex:-1},n>r?(e.sortIndex=n,Lu(st,e),Se(Ke)===null&&e===Se(st)&&(Jn?(oa(Wn),Wn=-1):Jn=!0,Uu(Vu,n-r))):(e.sortIndex=l,Lu(Ke,e),xt||jr||(xt=!0,Bu(Qu))),e};Rd.unstable_shouldYield=sa;Rd.unstable_wrapCallback=function(e){var t=re;return function(){var n=re;re=t;try{return e.apply(this,arguments)}finally{re=n}}}});var zi={};Pf(zi,{version:()=>qf,unstable_renderSubtreeIntoContainer:()=>wf,unstable_batchedUpdates:()=>Cf,unmountComponentAtNode:()=>Lf,render:()=>Nf,hydrateRoot:()=>Ef,hydrate:()=>Af,flushSync:()=>yf,findDOMNode:()=>vf,createRoot:()=>gf,createPortal:()=>hf,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:()=>mf});function E(e){for(var t="https://reactjs.org/docs/error-decoder.html?invariant="+e,n=1;n<arguments.length;n++)t+="&args[]="+encodeURIComponent(arguments[n]);return"Minified React error #"+e+"; visit "+t+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}function bt(e,t){Ln(e,t),Ln(e+"Capture",t)}function Ln(e,t){pr[e]=t;for(e=0;e<t.length;e++)gs.add(t[e])}function dp(e){if(_u.call(da,e))return!0;if(_u.call(fa,e))return!1;if(fp.test(e))return da[e]=!0;return fa[e]=!0,!1}function pp(e,t,n,r){if(n!==null&&n.type===0)return!1;switch(typeof t){case"function":case"symbol":return!0;case"boolean":if(r)return!1;if(n!==null)return!n.acceptsBooleans;return e=e.toLowerCase().slice(0,5),e!=="data-"&&e!=="aria-";default:return!1}}function mp(e,t,n,r){if(t===null||typeof t>"u"||pp(e,t,n,r))return!0;if(r)return!1;if(n!==null)switch(n.type){case 3:return!t;case 4:return t===!1;case 5:return isNaN(t);case 6:return isNaN(t)||1>t}return!1}function fe(e,t,n,r,l,u,o){this.acceptsBooleans=t===2||t===3||t===4,this.attributeName=r,this.attributeNamespace=l,this.mustUseProperty=n,this.propertyName=e,this.type=t,this.sanitizeURL=u,this.removeEmptyString=o}function Go(e){return e[1].toUpperCase()}function bo(e,t,n,r){var l=ne.hasOwnProperty(t)?ne[t]:null;if(l!==null?l.type!==0:r||!(2<t.length)||t[0]!=="o"&&t[0]!=="O"||t[1]!=="n"&&t[1]!=="N")mp(t,n,l,r)&&(n=null),r||l===null?dp(t)&&(n===null?e.removeAttribute(t):e.setAttribute(t,""+n)):l.mustUseProperty?e[l.propertyName]=n===null?l.type===3?!1:"":n:(t=l.attributeName,r=l.attributeNamespace,n===null?e.removeAttribute(t):(l=l.type,n=l===3||l===4&&n===!0?"":""+n,r?e.setAttributeNS(r,t,n):e.setAttribute(t,n)))}function Kn(e){if(e===null||typeof e!=="object")return null;return e=pa&&e[pa]||e["@@iterator"],typeof e==="function"?e:null}function Yn(e){if(Fu===void 0)try{throw Error()}catch(n){var t=n.stack.trim().match(/\n( *(at )?)/);Fu=t&&t[1]||""}return`
@@ -448,16 +395,26 @@ function ArenaV6(){
  const tracked=rows.find(m=>m.id===backed?.id);
  const old=oldBacked.current;
  const movement=tracked&&tracked.id===old?.id&&old?.week_start===meta?.week_start&&old.rank?old.rank-tracked.rank:null;
- const daily=(journal[today]||[]).slice(0,10),comparable=daily.filter(p=>typeof p.majority==="boolean");
+ const daily=(journal[today]||[]).slice(0,10),extraCount=Math.max(0,total-10),comparable=daily.filter(p=>typeof p.majority==="boolean");
  const alignment=comparable.length?Math.round(comparable.filter(p=>p.majority).length/comparable.length*100):null;
  const elapsed=meta?Math.max(0,Date.parse(meta.closes_at)-clock-(meta.offset||0)):0;
  const remaining=Math.floor(elapsed/86400000)+"d "+Math.floor(elapsed%86400000/3600000)+"h "+Math.floor(elapsed%3600000/60000)+"m";
  const dayLeft=Math.max(0,Date.parse(today+"T00:00:00Z")+86400000-clock);
  function back(m){const selected={id:m.id,title:m.title,rank:m.rank,week_start:meta?.week_start};setBacked(selected);save("arena-v7-backed",selected);setNotice((localPreview?"Demo: ":"")+"You're backing "+m.title+".")}
  async function share(){
-   const u=new URL(location.href);u.hash="battle";
+   const u=new URL("https://explained.meme/");u.hash="battle";
    const text=localPreview?"I'm testing the Daily Meme Battle demo.":alignment===null?"I picked today's funniest memes. Your turn.":"I picked the crowd's favourite in "+alignment+"% of "+comparable.length+" comparable battles. What's your taste?";
-   try{if(navigator.share)await navigator.share({title:"Daily Meme Battle",text,url:localPreview?undefined:u.href});else{await navigator.clipboard.writeText(text+(localPreview?"":" "+u.href));setNotice("Result copied.")}}catch{setNotice("Sharing unavailable or cancelled.")}
+   const value=text+(localPreview?"":" "+u.href);
+   if(navigator.share)try{await navigator.share({title:"Daily Meme Battle",text,url:localPreview?undefined:u.href});setNotice("Result shared.");return}catch(e){if(e?.name==="AbortError"){setNotice("Sharing cancelled.");return}}
+   try{
+     if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(value);
+     else{
+       const field=document.createElement("textarea");field.value=value;field.setAttribute("readonly","");
+       Object.assign(field.style,{position:"fixed",opacity:"0"});document.body.appendChild(field);field.select();
+       if(!document.execCommand("copy"))throw Error("Copy unavailable");field.remove();
+     }
+     setNotice("Result copied. Paste it wherever you want to share.");
+   }catch{window.prompt("Copy your result:",value);setNotice("Copy the result from the open box.")}
  }
  function image(m,thumb=false){return E("img",{src:m.image_url,alt:m.title||"Meme contender",className:thumb?"av-thumb":"av-meme",loading:thumb?"lazy":"eager",referrerPolicy:"no-referrer",onLoad:thumb?undefined:()=>setReady(v=>({...v,[m.id]:true})),onError:thumb?undefined:()=>{setBroken(v=>[...v,m.id]);setError("Image unavailable. Skip this matchup.")}})}
  const canVote=phase!=="voting"&&pair.length===2&&pair.every(m=>ready[m.id]&&!broken.includes(m.id));
@@ -469,7 +426,7 @@ function ArenaV6(){
  const champion=meta?.previous_winner;
  return E("section",{className:"arena-v6","aria-label":"Daily Meme Battle"},
    E("header",{className:"av-header"},E("div",null,E("div",{className:"av-eyebrow"},"THE INTERNET POSTS. YOU DECIDE."),E("h1",null,"DAILY MEME ",E("span",null,"BATTLE")),E("p",{className:"av-subtitle"},"Ten quick picks. Discover your taste. Help crown this week's funniest meme.")),
-     E("div",{className:"av-daily"},E("span",{className:"av-eyebrow"},localPreview?"DEMO DAILY TEN":"YOUR DAILY TEN"),E("strong",null,Math.min(total,10),E("small",null," / 10 picks")),E("progress",{max:10,value:Math.min(total,10),"aria-label":"Daily progress"}),E("span",{className:"av-muted"},"Resets in "+Math.floor(dayLeft/3600000)+"h "+Math.floor(dayLeft%3600000/60000)+"m · UTC"))),
+     E("div",{className:"av-daily"},E("span",{className:"av-eyebrow"},localPreview?"DEMO DAILY TEN":"YOUR DAILY TEN"),E("strong",null,Math.min(total,10),E("small",null," / 10 picks"+(extraCount?" · "+extraCount+" extra":""))),E("progress",{max:10,value:Math.min(total,10),"aria-label":"Daily progress"}),E("span",{className:"av-muted"},"Resets in "+Math.floor(dayLeft/3600000)+"h "+Math.floor(dayLeft%3600000/60000)+"m · UTC"))),
    localPreview&&E("div",{className:"av-preview",role:"note"},E("strong",null,"PREVIEW · SIMULATED RESULTS"),E("span",null,"Sample memes, crowd percentages and rankings are demo data. Complete ten picks to try your result card. Nothing is sent or saved.")),
    E("div",{className:"av-meta"},tag(localPreview?"OFFLINE DEMO":"THIS WEEK"),E("span",null,(meta?.new_today??"—")+" new memes today"),meta?.new_since!==null&&meta?.new_since!==undefined&&E("span",null,meta.new_since+" new since your last visit"),E("span",null,(meta?.eligible_count??0)+" contenders"),E("span",null,rows.length===200?"Top 200 loaded":"")),
    E("div",{className:"av-season"},E("div",null,E("strong",null,"WEEKLY CROWN"),E("p",null,elapsed>0?"Closes Sunday night · "+remaining+" left":"New week loading — refresh to continue")),E("span",{className:"av-muted"},"Monday 00:00 UTC cutoff · minimum votes required"),meta&&elapsed===0&&button("Load new week",()=>{seen.current.clear();load()},"av-primary")),
@@ -484,8 +441,8 @@ function ArenaV6(){
        E("div",{className:"av-picks"},...daily.map((p,i)=>E("div",{key:i},p.title))),
        E("p",null,tracked?"You're backing #"+tracked.rank+". Return to see how it finishes on Sunday.":"Back a meme below, then return for its weekly result."),
        E("div",{className:"av-actions"},button("Share my result",share,"av-primary"),button("Keep battling",()=>{setExtra(true);choose(rows)},"av-quiet"))):
-     pair.length<2?E("div",{className:"av-empty"},E("h2",null,"You're caught up."),E("p",null,"No unseen eligible matchups remain. Check back as new contenders arrive."),button("Check for new memes",()=>{seen.current.clear();load()},"av-primary")):
-     E(R.Fragment,null,E("div",{className:"av-round"},E("span",null,total<10?"PICK "+(total+1)+" OF 10":"EXTRA ROUNDS"),E("span",{className:"av-muted"},"Tap a meme. Next battle loads automatically.")),E("div",{className:"av-match"},...pair.map(card)),E("div",{className:"av-controls"},button("Skip battle",()=>{setError("");choose(rows)},"av-quiet",phase==="voting"),E("span",{className:"av-muted"},"← / → to vote · expand to read")))),
+     pair.length<2?E("div",{className:"av-empty"},E("h2",null,"You're caught up."),E("p",null,"No unseen eligible matchups remain today."+(extraCount?" You completed "+extraCount+" extra pick"+(extraCount===1?".":"s."):"")+" Check back as new contenders arrive."),button("Check for new memes",()=>{seen.current.clear();load()},"av-primary")):
+     E(R.Fragment,null,E("div",{className:"av-round"},E("span",null,total<10?"PICK "+(total+1)+" OF 10":"EXTRA PICK "+(extraCount+1)),E("span",{className:"av-muted"},"Tap a meme. Next battle loads automatically.")),E("div",{className:"av-match"},...pair.map(card)),E("div",{className:"av-controls"},button("Skip battle",()=>{setError("");choose(rows)},"av-quiet",phase==="voting"),E("span",{className:"av-muted"},"← / → to vote · expand to read")))),
    E("aside",{className:"av-sidebar"},E("div",{className:"av-board"},E("div",{className:"av-board-head"},E("div",null,E("div",{className:"av-eyebrow"},"THE PECKING ORDER"),E("h2",null,"This week's favourites")),tag(localPreview?"DEMO":"TOP 10")),
      E("ol",{className:"av-leaders"},...rows.slice(0,10).map(m=>E("li",{key:m.id},E("span",{className:"av-rank"},m.rank),E("button",{type:"button",className:"av-leader-link",onClick:()=>setPreview(m)},image(m,true),E("span",null,E("strong",null,m.title),E("small",null,m.wins+"W · "+m.losses+"L · "+(m.wins+m.losses<3?"ROOKIE":m.elo+" rating")))),button(backed?.id===m.id?"★":"☆",()=>back(m),"av-star",false,"Back "+m.title)))),
      E("div",{className:"av-board-footer"},"☆ Back one contender. Return for its result. Ratings reset each week.")),
@@ -515,214 +472,6 @@ function Ti(){let[e,t]=F.useState(()=>location.hash==="#battle"?"BATTLE_ARENA":"
 </script>
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   
-
-<script>
-(function(){
-  // Admin gate
-  const uploadEl = document.getElementById('explained-upload');
-  function isAdmin(){ const url=window.location.href; return url.includes('?admin')||url.includes('&admin')||url.includes('#admin')||localStorage.getItem('isAdmin')==='true'; }
-  function checkAdmin(){ if(isAdmin()) uploadEl.style.display='block'; else uploadEl.style.display='none'; }
-  checkAdmin();
-  document.addEventListener('keydown', (e)=>{ if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='a'){ const cur=localStorage.getItem('isAdmin')==='true'; if(cur){localStorage.removeItem('isAdmin'); alert('Admin hidden'); uploadEl.style.display='none';} else {localStorage.setItem('isAdmin','true'); alert('Admin shown'); uploadEl.style.display='block';} } });
-})();
-
-(function(){
-  let selectedFile = null;
-  const fileInput = document.getElementById('file-input');
-  const dropZone = document.getElementById('drop-zone');
-  const preview = document.getElementById('preview');
-  const fileInfo = document.getElementById('file-info');
-  const dropText = document.getElementById('drop-text');
-  const clearBtn = document.getElementById('clear-file');
-  const msgEl = document.getElementById('up-msg');
-  
-  function showPreview(file){
-    selectedFile = file;
-    const url = URL.createObjectURL(file);
-    preview.src = url;
-    preview.style.display = 'block';
-    fileInfo.textContent = file.name + ' (' + Math.round(file.size/1024) + ' KB)';
-    fileInfo.style.display = 'block';
-    dropText.style.display = 'none';
-    clearBtn.style.display = 'block';
-    msgEl.textContent = 'Ready: ' + file.name;
-    msgEl.style.color = '#a3e635';
-  }
-  
-  function clearPreview(e){
-    if(e){ e.preventDefault(); e.stopPropagation(); }
-    selectedFile = null;
-    fileInput.value = '';
-    preview.src = '';
-    preview.style.display = 'none';
-    fileInfo.style.display = 'none';
-    dropText.style.display = 'block';
-    clearBtn.style.display = 'none';
-    msgEl.textContent = '';
-  }
-  
-  clearBtn.addEventListener('click', clearPreview);
-  fileInput.addEventListener('change', (e)=>{ const f=e.target.files&&e.target.files[0]; if(f) showPreview(f); });
-  dropZone.addEventListener('dragover', (e)=>{ e.preventDefault(); dropZone.style.borderColor='#d4ff00'; dropZone.style.background='#1a1a0a'; });
-  dropZone.addEventListener('dragleave', ()=>{ dropZone.style.borderColor='#3f3f46'; dropZone.style.background='#09090b'; });
-  dropZone.addEventListener('drop', (e)=>{ e.preventDefault(); dropZone.style.borderColor='#3f3f46'; dropZone.style.background='#09090b'; const f=e.dataTransfer.files&&e.dataTransfer.files[0]; if(f) showPreview(f); });
-  
-  document.getElementById('up-btn').addEventListener('click', async()=>{
-    const title = document.getElementById('up-title').value.trim();
-    const meaning = document.getElementById('up-meaning').value.trim();
-    const origin = document.getElementById('up-origin').value.trim();
-    const example = document.getElementById('up-example').value.trim();
-    const tag = document.getElementById('up-tag').value;
-    const helpEl = document.getElementById('schema-help');
-    const btn = document.getElementById('up-btn');
-    
-    if(!selectedFile){ msgEl.textContent='❌ Click the box to select image'; msgEl.style.color='#ef4444'; return; }
-    if(!title){ msgEl.textContent='❌ Need title'; msgEl.style.color='#ef4444'; return; }
-    
-    btn.disabled=true; btn.textContent='Uploading...'; msgEl.textContent='Uploading to Templates...'; msgEl.style.color='#a1a1aa'; helpEl.style.display='none';
-    
-    try{
-      const kn='https://locumfwdacdrqgxputou.supabase.co';
-      const be='sb_publishable_uaC5S2y8eCcCpvB8PZlwzg_m-ZUqyHR';
-      const fileName=Date.now()+'-'+selectedFile.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-      
-      let upRes=await fetch(`${kn}/storage/v1/object/Templates/${fileName}`,{method:'POST',headers:{apikey:be,Authorization:`Bearer ${be}`,'x-upsert':'false'},body:selectedFile});
-      if(!upRes.ok){ let t=await upRes.text(); throw new Error('Storage upload failed: '+t); }
-      
-      const imageUri=`${kn}/storage/v1/object/public/Templates/${fileName}`;
-      msgEl.textContent='Creating row...';
-      
-      let existingCols=[];
-      try{
-        let r=await fetch(`${kn}/rest/v1/memes?select=*&limit=1`,{headers:{apikey:be,Authorization:`Bearer ${be}`}});
-        if(r.ok){ let rows=await r.json(); if(rows.length>0) existingCols=Object.keys(rows[0]); }
-      }catch(e){}
-      
-      // Build base data
-      let baseData = {
-        id: fileName,
-        title: title,
-        elo: 1200,
-        avg_rating: 0,
-        ratings_count: 0,
-        wins: 0,
-        losses: 0,
-        tags: [tag, "meme"],
-        is_user_submitted: true,
-        meaning: meaning,
-        origin: origin,
-        example: example,
-        image_uri: imageUri,
-        image_url: imageUri, // V19 FIX: dual write
-        storage_path: fileName,
-        file_name: fileName
-      };
-      
-      // Discover actual columns
-      existingCols=[];
-      try{
-        let r=await fetch(`${kn}/rest/v1/memes?select=*&limit=1`,{headers:{apikey:be,Authorization:`Bearer ${be}`}});
-        if(r.ok){ let rows=await r.json(); if(rows.length>0) existingCols=Object.keys(rows[0]); }
-      }catch(e){}
-      console.log('Existing cols from API:', existingCols);
-      
-      // Function to try insert with filtered payload
-      async function tryInsert(payload){
-        console.log('Trying payload:', Object.keys(payload));
-        let res=await fetch(`${kn}/rest/v1/memes`,{method:'POST',headers:{apikey:be,Authorization:`Bearer ${be}`,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(payload)});
-        let txt=await res.text();
-        return {ok: res.ok, text: txt, res: res};
-      }
-      
-      // Build payload with only columns that exist (or all if we couldn't detect)
-      let payload={};
-      for(let k in baseData){
-        if(existingCols.length===0 || existingCols.includes(k)){
-          payload[k]=baseData[k];
-        }
-      }
-      // If we detected columns, also try common aliases for image
-      if(existingCols.length>0){
-        // Ensure at least one image column
-        if(!payload['image_uri'] && !payload['image_url'] && !payload['storage_path'] && !payload['file_name']){
-          // No image col detected, try all known image cols that exist
-          if(existingCols.includes('image_uri')) payload['image_uri']=imageUri;
-          else if(existingCols.includes('image_url')) payload['image_url']=imageUri;
-          else if(existingCols.includes('storage_path')) payload['storage_path']=fileName;
-          else if(existingCols.includes('file_name')) payload['file_name']=fileName;
-        }
-      }
-      
-      let result = await tryInsert(payload);
-      
-      // If failed due to missing column, auto-remove bad columns and retry (up to 10 times)
-      let attempts=0;
-      while(!result.ok && attempts<10){
-        let m = result.text.match(/Could not find the '([^']+)' column/);
-        if(!m) break;
-        let badCol = m[1];
-        console.log('Column not found in cache:', badCol, 'removing and retrying');
-        
-        if(payload.hasOwnProperty(badCol)){
-          delete payload[badCol];
-          // If badCol was image_uri, try image_url as fallback
-          if(badCol==='image_uri' && (existingCols.length===0 || existingCols.includes('image_url'))){
-            payload['image_url']=imageUri;
-            console.log('Trying image_url fallback');
-          } else if(badCol==='image_url' && (existingCols.length===0 || existingCols.includes('image_uri'))){
-            payload['image_uri']=imageUri;
-            console.log('Trying image_uri fallback');
-          } else if((badCol==='image_uri' || badCol==='image_url') && existingCols.includes('storage_path')){
-            payload['storage_path']=fileName;
-          }
-          
-          result = await tryInsert(payload);
-          attempts++;
-        } else {
-          // Bad col not in payload, but error says it's missing - try to find which col in payload is causing issue by removing one by one
-          // Try removing meaning/origin/example first
-          if(payload['meaning']){ delete payload['meaning']; result=await tryInsert(payload); attempts++; continue; }
-          if(payload['origin']){ delete payload['origin']; result=await tryInsert(payload); attempts++; continue; }
-          if(payload['example']){ delete payload['example']; result=await tryInsert(payload); attempts++; continue; }
-          break;
-        }
-      }
-      
-      // Final fallback: absolute minimal payload that your screenshot shows MUST work
-      if(!result.ok){
-        console.log('All retries failed, trying absolute minimal');
-        let minimalPayloads = [
-          {id: fileName, title: title, image_uri: imageUri, image_url: imageUri, tags: [tag,"meme"]},
-          {id: fileName, title: title, image_url: imageUri, image_uri: imageUri, tags: [tag,"meme"]},
-          {id: fileName, title: title, image_uri: imageUri},
-          {id: fileName, title: title, image_url: imageUri},
-          {title: title, image_uri: imageUri, tags: [tag,"meme"]},
-          {title: title, image_url: imageUri, tags: [tag,"meme"]},
-          {id: fileName, title: title, elo: 1200}
-        ];
-        
-        for(let mp of minimalPayloads){
-          console.log('Trying minimal:', mp);
-          result = await tryInsert(mp);
-          if(result.ok) { payload=mp; break; }
-        }
-      }
-      
-      if(!result.ok){
-        let t=result.text;
-        if(t.includes('schema cache')){
-          helpEl.style.display='block';
-          helpEl.innerHTML='Schema cache stale. Run in SQL Editor:<br><code style="background:#18181b;padding:6px;display:block;margin-top:6px;">NOTIFY pgrst, \'reload schema\';</code>Then wait 30s and try again.<br><br>Also ensure these columns exist:<br><code style="background:#18181b;padding:6px;display:block;margin-top:6px;">ALTER TABLE public.memes ADD COLUMN IF NOT EXISTS meaning text;<br>ALTER TABLE public.memes ADD COLUMN IF NOT EXISTS origin text;<br>ALTER TABLE public.memes ADD COLUMN IF NOT EXISTS example text;<br>ALTER TABLE public.memes ADD COLUMN IF NOT EXISTS image_uri text;<br>ALTER TABLE public.memes ADD COLUMN IF NOT EXISTS image_url text;</code>Error: '+t;
-        }
-        if(t.includes('row-level security')||t.includes('policy')) throw new Error('RLS policy missing: '+t);
-        throw new Error('DB insert failed after all retries: '+t+' | Tried: '+Object.keys(payload).join(',')+' | Existing cols API says: '+existingCols.join(','));
-      }
-      
-      msgEl.textContent='✅ Added! Reloading...'; msgEl.style.color='#a3e635'; setTimeout(()=>location.reload(),1200);
-    }catch(err){ msgEl.textContent='❌ '+err.message; msgEl.style.color='#ef4444'; btn.disabled=false; btn.textContent='Add to Explained'; console.error(err); }
-  });
-})();
-</script>
 
 
 <script id="v32-js">
