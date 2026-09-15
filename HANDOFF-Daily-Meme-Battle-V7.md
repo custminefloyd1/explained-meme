@@ -1472,3 +1472,24 @@ This verifies:
 The delay can include Auth, network and Edge Function cold-start time. No performance conclusion should be drawn from one local submission.
 
 Not yet independently confirmed: Resend log status, destination inbox arrival and Reply-To behaviour. Do not connect main navigation or call delivery complete until those checks pass.
+
+
+### Contact V1 end-to-end email delivery verified — 2026-09-15
+
+The user completed the end-to-end Contact V1 test and confirmed:
+
+- The standalone page received `accepted:true` and displayed `Message accepted.`.
+- Resend logged `POST /emails` with HTTP 200.
+- The email arrived in the configured destination inbox.
+- Using Reply addressed the visitor email entered in the form.
+- The Resend API key is restricted to sending access.
+- `contact-v1` has the legacy JWT gateway toggle OFF and performs its own live token validation.
+
+This verifies the complete delivery path: browser → anonymous Supabase Auth → `contact-v1` → Resend → owner inbox, including Reply-To behaviour. Contact V1 is functionally ready for navigation integration.
+
+Remaining cleanup/release steps:
+
+- Delete only the accidental `bright-function`, `smart-function` and `smooth-responder` endpoints.
+- Preserve `arena-import-v6` and `contact-v1`.
+- Obtain explicit authorization to replace the generated branch HTML solely to redirect CONTACT to `contact.html`, because the large legacy bundle contains dormant direct-write code.
+- Retest navigation from the main page after a fresh branch download.
