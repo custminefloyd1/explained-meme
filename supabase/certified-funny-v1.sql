@@ -77,13 +77,13 @@ begin
     raise exception 'Already rated today' using errcode = '23505';
   end if;
 
-  -- Basic per-identity abuse ceiling.
+  -- Basic per-identity abuse ceiling. Forty allows the 25-picture deck at a fast pace.
   if (
     select count(*)
     from public.certified_funny_votes_v1
     where voter_id = v_user
       and created_at >= now() - interval '1 minute'
-  ) >= 20 then
+  ) >= 40 then
     raise exception 'Rate limit exceeded' using errcode = '54000';
   end if;
 
