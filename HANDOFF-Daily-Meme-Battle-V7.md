@@ -949,3 +949,21 @@ Implemented:
 - Frontend commit: `02f88d4219cbcbe8b03a0e7688dec6858c0514bc`.
 - Test commit: `afeabb68faa65b870927c0ae7ea7fca19155a141`.
 - No production deployment was performed.
+
+
+### Header logo sizing regression corrected — 2026-09-15
+
+The attempted logo enlargement used new arbitrary Tailwind classes (`h-[56px]`, `sm:h-[68px]`, and `md:h-[88px]`). This site ships a precompiled CSS bundle, so those new class names had no generated rules. The image therefore fell back to its large natural dimensions and dominated the page.
+
+After explicit user approval for another full single-file replacement, the unreliable classes were removed and replaced with a scoped `.site-logo` rule:
+
+- Mobile: 56px height.
+- Small screens: 64px height.
+- Desktop: 80px height.
+- Width remains automatic and viewport-constrained.
+
+The database permission lockdown was not changed. The explicit CSS was verified in the committed HTML and all 44 mocked Battle assertions pass.
+
+Commit: `0ff52179e8267dde23f6c898244f49a4e0c68447`.
+
+No production deployment was performed. Browser verification requires a fresh branch ZIP.
