@@ -823,3 +823,29 @@ Normal content reading and the V7 Battle RPC flow remain.
 This removal does not by itself close the underlying legacy database/storage permissions. Added read-only `supabase/arena-v7-legacy-write-preflight.sql` to inspect relevant `memes` and `storage.objects` policies, direct client grants, and affected buckets before writing a lockdown migration.
 
 The mocked Battle suite passes all 41 assertions. The test now also fails immediately if the removed admin uploader markers reappear.
+
+
+### Legacy-write preflight reviewed and lockdown prepared — 2026-09-15
+
+The user returned the CSV from `supabase/arena-v7-legacy-write-preflight.sql`. It confirmed:
+
+- `public.memes` had public INSERT and two public UPDATE policies.
+- Both `anon` and `authenticated` held every table privilege on `public.memes`, including INSERT, UPDATE, DELETE and TRUNCATE.
+- Storage policy `Allow insert 1psdoj_0` used `WITH CHECK (true)`, allowing a client upload without restricting the bucket.
+- Storage policy `Allow upload 1twzac9_0` allowed public uploads to the `Templates` bucket.
+- Existing Storage SELECT policies are bucket-scoped. The `memes` and `Templates` buckets are public; `Trending` is private.
+
+Added `supabase/arena-v7-lockdown-legacy-writes.sql`. It has **not** been executed.
+
+The migration:
+
+- Drops the three legacy public write policies on `public.memes`.
+- Revokes non-read table privileges on `public.memes` from `anon` and `authenticated`.
+- Explicitly preserves SELECT access needed by the existing site.
+- Drops both public Storage upload policies.
+- Preserves Storage read policies and does not revoke the standard `storage.objects` table grants, because Supabase Storage combines those grants with RLS.
+- Includes fail-closed assertions; if any client-facing write policy or direct `memes` write privilege remains, the transaction rolls back.
+
+Compatibility impact is intentional: any remaining legacy browser code that directly updates `memes.elo`, `wins`, `losses`, or other meme fields will stop persisting. Daily Meme Battle V7 is unaffected because it votes through `arena_vote_v7`. The server importer is unaffected because it uses the admin client. Browser uploads to Templates are intentionally disabled because the uploader was removed.
+
+Next action: run the complete lockdown SQL in Supabase SQL Editor, then rerun `supabase/arena-v7-legacy-write-preflight.sql` and return its CSV for verification.
