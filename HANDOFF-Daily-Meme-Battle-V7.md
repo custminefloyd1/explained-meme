@@ -789,3 +789,37 @@ The secret value was not shared in the conversation or repository. Configuration
 Cloudflare Pages inspection showed the site is manually deployed and is not connected to its Git repository. All visible deployments were production uploads from `main`; no PR/branch preview exists. Connecting Git at this stage was rejected as unsafe because it could redeploy a repository version that has not been proven identical to the current live bundle.
 
 The user added `localhost` to the existing Cloudflare Turnstile widget's allowed hostnames, while retaining production hostnames. This permits a local HTTP server to test the branch frontend against real Supabase Auth and voting without changing the live website. Remove `localhost` from the widget after testing is complete.
+
+
+### First live browser vote and follow-up fixes — 2026-09-15
+
+The branch was served from `http://localhost:8000` with localhost allowlisted in Turnstile. The user confirmed that real memes loaded, anonymous Auth/Turnstile voting worked, ten votes completed, and each confirmed vote advanced immediately.
+
+The test exposed two UX problems:
+
+- Share did not work in the tested desktop browser.
+- Extra rounds remained visually stuck at 10/10 and eventually exhausted the finite set of unique daily pairs without explaining progress.
+
+Implemented fixes in `explained meme/index.html`:
+
+- Share now tries the native share sheet, falls back to Clipboard API, then falls back to a manual copy prompt.
+- Shared live links always point to `https://explained.meme/#battle`, not localhost.
+- The daily achievement remains 10/10 while a separate extra-pick count is displayed.
+- The round label advances as `EXTRA PICK 1`, `EXTRA PICK 2`, etc.
+- The exhausted state reports the completed extra-pick count and explains that no unseen eligible daily matchups remain.
+
+### Legacy browser uploader removal
+
+The user chose the recommended security path instead of preserving the legacy `?admin` uploader. Removed:
+
+- The hidden admin upload markup.
+- URL/hash/localStorage admin gating.
+- The Ctrl+Shift+A reveal shortcut.
+- Direct browser uploads to the Templates storage bucket.
+- The associated direct browser insert/retry logic for `public.memes`.
+
+Normal content reading and the V7 Battle RPC flow remain.
+
+This removal does not by itself close the underlying legacy database/storage permissions. Added read-only `supabase/arena-v7-legacy-write-preflight.sql` to inspect relevant `memes` and `storage.objects` policies, direct client grants, and affected buckets before writing a lockdown migration.
+
+The mocked Battle suite passes all 41 assertions. The test now also fails immediately if the removed admin uploader markers reappear.
