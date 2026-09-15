@@ -1493,3 +1493,24 @@ Remaining cleanup/release steps:
 - Preserve `arena-import-v6` and `contact-v1`.
 - Obtain explicit authorization to replace the generated branch HTML solely to redirect CONTACT to `contact.html`, because the large legacy bundle contains dormant direct-write code.
 - Retest navigation from the main page after a fresh branch download.
+
+
+### Main Contact navigation connected to verified Contact V1 — 2026-09-15
+
+The user explicitly approved replacing the current branch HTML solely to connect Contact to `contact.html`, despite the dormant legacy write code, while requiring database permissions to remain locked.
+
+Completed:
+
+- The main site's `CONTACT` navigation action now redirects to the end-to-end verified standalone Contact V1 page.
+- The redirect occurs exactly once.
+- Added a regression guard requiring the verified standalone destination.
+- Every inline script in the main bundle and `contact.html` parses successfully.
+- The standalone form still requires HTTP success plus `accepted:true` and contains no Netlify fake-success path.
+- No database schema, data, authentication configuration, grants, RLS or Storage policies changed.
+
+Commits:
+
+- Main navigation: `50b9a4abc4cb10c94d7dcd9cb1da6cad550c2529`.
+- Regression guard: `4ce807ba7a75f9728a56fa7a02094001a51b4bff`.
+
+The legacy embedded Contact branch remains dormant inside the monolith and is no longer reachable through public navigation. The accidental Supabase functions `bright-function`, `smart-function` and `smooth-responder` still require owner-confirmed deletion if not already removed.
