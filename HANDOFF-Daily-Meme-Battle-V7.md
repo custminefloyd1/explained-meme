@@ -1279,3 +1279,24 @@ Commits:
 - Test: `bccaccba39701ab8f90edeef42d2c86f3efbff36`.
 
 No database, authentication, rating or permission logic changed.
+
+
+### Main navigation connected to secure Certified Funny page — 2026-09-15
+
+After visual acceptance of the standalone Certified Funny experience, the main site's `CERTIFIED FUNNY?` navigation control was connected to `certified-funny.html`.
+
+Scope:
+
+- Only the `CERTIFIED_FUNNY` navigation action redirects to the standalone page.
+- EXPLAINED, Daily Meme Battle, Screensaver, Live and Contact navigation behaviour remains unchanged.
+- The old embedded Certified Funny render branch remains dormant in the monolith; removing it is deferred because it is unnecessary for routing and would expand regression risk.
+- Added a regression guard requiring the secure standalone destination.
+- Verified the redirect occurs exactly once.
+- Verified every inline script in both `index.html` and `certified-funny.html` parses successfully.
+
+Commits:
+
+- Main navigation: `961144cc27c9c26cedac8b395a20b75745ad26da`.
+- Regression guard: `e56d4e0e2662ac880ddc373f863aad31f18ce3f7`.
+
+No database, authentication, rating, RLS or grant changes were made. Next gate: test navigation in a fresh local branch download, then run a complete pre-deployment smoke test across all public sections.
