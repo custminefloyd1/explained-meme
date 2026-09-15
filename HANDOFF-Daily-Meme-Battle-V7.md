@@ -932,3 +932,20 @@ Verification:
 - Frontend commits: `5caf0d6818f212e0a5be6c22bf0d13ccfc98d62f` and `8c6835a8c961af7150c37beafc822211eb0f95d5`.
 - Test commits: `a91873e3ccddeb0d2afe68f0570125629814c82e` and `aa2e85e0dfe4c8a6cb11e0a8f5868079c9cbc27d`.
 - No production deployment was performed. A fresh branch ZIP is required for browser retesting.
+
+
+### Share-copy confirmation and larger header logo — 2026-09-15
+
+The user verified that voting and the new share panel work. Copying succeeded but closed the panel immediately, providing weak confirmation. The user also requested a larger header logo.
+
+Implemented:
+
+- Copying a result no longer closes the share dialog.
+- The Copy button changes to `Copied!` after a successful clipboard operation.
+- The copied text remains visible for inspection or manual copying.
+- Increased the responsive logo heights from 48/56/72 px to 56/68/88 px at mobile/small/desktop breakpoints.
+- Added regression guards requiring the persistent share panel and copied-confirmation state.
+- All 44 mocked Battle assertions pass.
+- Frontend commit: `02f88d4219cbcbe8b03a0e7688dec6858c0514bc`.
+- Test commit: `afeabb68faa65b870927c0ae7ea7fca19155a141`.
+- No production deployment was performed.
