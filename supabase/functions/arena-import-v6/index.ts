@@ -37,11 +37,15 @@ export default {
 
           const image = new URL(post.url);
           const source = new URL(post.postLink);
-          const redditId = source.pathname.match(/\/comments\/([a-z0-9]+)(?:\/|$)/i)?.[1];
+          const sourceHost = source.hostname.toLowerCase();
+          const redditId = sourceHost === "redd.it"
+            ? source.pathname.match(/^\/([a-z0-9]+)\/?$/i)?.[1]
+            : /(^|\.)reddit\.com$/i.test(sourceHost)
+              ? source.pathname.match(/\/comments\/([a-z0-9]+)(?:\/|$)/i)?.[1]
+              : undefined;
 
           if (
             !redditId ||
-            !/(^|\.)reddit\.com$/i.test(source.hostname) ||
             image.protocol !== "https:" ||
             !/\.(png|jpe?g|gif|webp)$/i.test(image.pathname) ||
             !["i.redd.it", "preview.redd.it", "i.imgur.com"].includes(image.hostname)
