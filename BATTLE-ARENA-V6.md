@@ -1,74 +1,66 @@
-# Daily Meme Battle v6 — review build
+# Daily Meme Battle — retention build
 
-## Local preview update
-Download the branch ZIP, extract it, open `explained meme/index.html`, then select DAILY MEME BATTLE.
-When opened via file://, the arena uses six embedded original demo memes. A prominent PREVIEW
-banner distinguishes them from Reddit content. Picks only exercise the interface: no network
-requests, scores, votes or daily progress are saved by the arena. Opening over HTTP(S) uses
-production mode and still requires Supabase setup.
+## Preview
 
-V5.2's EXPLAINED code and styling are preserved. Its existing file:// guard skips database loading
-when opened locally, so it can show built-in content instead of the deployed site's database memes.
-No browser rendering test was available; fifteen mocked component checks pass, including offline
-zero-network/no-persistence checks. Full non-Battle byte reconstruction against V5.2 passes.
+Download the `codex/battle-arena-v6` branch ZIP, open `explained meme/index.html`, and select **DAILY MEME BATTLE**.
 
-## Scope
-Only `explained meme/index.html` changes existing site code:
-- Replace the Battle Arena render branch with isolated `ArenaV6`.
-- Disable its obsolete parent keyboard-voting handler.
-- Allow `#battle` links to open the arena.
-- Add CSS exclusively under arena-specific classes.
-All non-Battle HTML/JavaScript bytes reconstruct exactly to V5.2 after reversing the intended arena integration and navigation rename. Obsolete V4/V5 Battle scripts, polling and importers are removed.
-V5.2 and old versions are untouched.
+The local file contains six embedded demo memes. Picks advance instantly. After ten picks, a demo result card appears. Demo rankings and percentages are explicitly labelled simulated; the preview makes no network requests and saves nothing.
 
-## Included
-- Responsive two-card voting, contained images, expand dialog with native modal focus handling.
-- Daily ten (UTC) with browser-persisted progress; extra rounds remain available.
-- Imported-in-last-seven-days eligibility; no fabricated old-content fallbacks.
-- Rating leaderboard available on mobile; refreshed after own confirmed votes.
-- Back one meme and find it on return; arena sharing uses #battle.
-- Local pairing history and exposure-aware pairing selection.
-- Loading, empty, exhausted, image-error and backend-error states.
-- A guarded atomic voting RPC with opponent-adjusted ratings.
-- An optional server-side Reddit/MemeAPI importer; no visitor-triggered imports.
+## Implemented experience
 
-## Release steps — NOT executed by this PR
-1. Review the actual Supabase schema and RLS policies. These were not available for inspection.
-2. Apply `supabase/arena-v6-voting.sql` in a staging database.
-3. Enable anonymous sign-ins in Supabase Authentication. Configure abuse controls and rate limits.
-4. Audit direct UPDATE access on memes. Existing clients may still be able to overwrite elo/wins/losses.
-   This migration intentionally does not revoke permissions used by other pages.
-   Do not advertise tamper-resistant rankings until that separate policy audit is complete.
-5. If no existing server importer is running, review/apply `supabase/arena-v6-import.sql`,
-   deploy `supabase/functions/arena-import-v6/index.ts`, and schedule POST requests on the server
-   (suggested cadence: hourly) with the x-arena-import-secret header.
-   Set ARENA_IMPORT_SECRET as a server secret; use the platform-configured SUPABASE_URL and
-   SUPABASE_SERVICE_ROLE_KEY. Never put either secret in the HTML.
-   The function uses its own secret check; configure gateway authentication consistently.
-   The unique index deliberately fails if existing Reddit IDs are duplicated: resolve those
-   records manually, without dropping votes or resetting scores.
-6. Run `node tests/arena-v6.test.mjs`.
-7. Browser-test at 390px, 768px, and 1440px: cards, expand/Escape/focus, successful vote,
-   failed vote, double-clicks, skip, UTC rollover, daily completion, backed pick and shared #battle link.
-8. Test SQL with two concurrent votes and reversed duplicate pair submissions in staging.
-9. Deploy the reviewed HTML using the existing Cloudflare Pages workflow. No hosting changes are included.
+- Immediate next matchup after a confirmed vote—no confirmation button.
+- Brief, non-blocking feedback showing crowd agreement and rank movement.
+- Agreement uses earlier votes from other visitors on that exact matchup. Fewer than five earlier votes shows “not enough votes,” never a fabricated percentage.
+- Ten daily picks with UTC reset and optional extra rounds.
+- End card showing agreement with the earlier majority across comparable matchups.
+- Back one meme and see movement on the next visit.
+- Monday–Sunday UTC competition, countdown, isolated weekly ratings and archived winner.
+- “New today” and “new since your last visit” use server data.
+- A quiet week records “insufficient votes” instead of inventing a champion.
+- Mobile leaderboard and shareable daily result.
 
-## Honest limits
-- Voting intentionally refuses to count locally if auth/RPC is missing; it is not live until setup.
-- Seven days means time added to this database, not Reddit post age. MemeAPI's random sample
-  does not establish virality; sorting sample upvotes is not a comprehensive trending algorithm.
-- No weekly seasons, archived champions, analytics instrumentation or report/moderation backend yet.
-- Daily progress/backed pick is browser-local, not synced across devices. Storage clearing loses it.
-- Anonymous identities can be recreated. The RPC rate limit is per identity, not bot-proof.
-- Leaderboard is the fetched eligible top 200, not realtime across visitors; own votes update it.
-- The server importer relies on MemeAPI and external images, with no image hosting/mirroring.
-- Existing legacy scores are not reset. Proper ELO updates begin after this migration.
-- The legacy site remains a bundled single HTML; this PR does not rebuild other pages.
+## Required backend setup — not applied
 
-## Verification performed
-- All five resulting inline scripts parse.
-- Fifteen mocked component checks pass: eligible pool, double-click guard, no direct PATCH,
-  failed votes not counted, visible failure, confirmed votes counted and visible feedback.
-- Byte reconstruction check confirms unrelated original content is preserved.
-- No real database writes, SQL execution, scheduled imports, browser rendering or deployment
-  were performed in this environment. Browser and staging checks remain release gates.
+Use `supabase/arena-v7-retention.sql` for this build. Do **not** apply the older `arena-v6-voting.sql` as the active voting backend.
+
+1. Review the real `public.memes` schema in a staging Supabase project.
+2. Apply `arena-v7-retention.sql`.
+3. Enable Supabase anonymous authentication and configure Auth rate limits/CAPTCHA.
+4. Confirm anonymous visitors can call `arena_state_v7`, authenticated anonymous visitors can call `arena_vote_v7`, and neither can directly read or write the private v7 tables.
+5. Test duplicate requests, repeated pairs, invalid/expired contenders, concurrent votes, low-sample agreement, rank ordering and weekly finalization.
+6. Keep an existing server-side Reddit importer if one exists. Otherwise review `arena-v6-import.sql`, deploy `functions/arena-import-v6/index.ts`, and schedule it server-side. Never expose service-role or importer secrets in the HTML.
+7. For exact Monday publication, enable and review the optional pg_cron call documented at the end of the migration. Otherwise the first state request after close finalizes the prior week.
+8. Browser-test desktop and mobile before deployment.
+
+## Statistic definitions
+
+- “68% agreed” means 68% of earlier votes from other visitors on this exact pair chose the same meme.
+- It is shown only with at least five earlier votes.
+- Daily agreement excludes tied matchups and pairs below the sample threshold.
+- Rank movement is computed inside the same database transaction as the vote.
+- The winner needs at least three appearances; the whole season needs at least five votes.
+- Ties break by wins and then stable meme ID.
+- “New” means database import time, not the original Reddit posting time.
+
+## Verification
+
+Thirty-six mocked assertions pass, covering instant advancement, double-click protection, successful and failed votes, low-sample honesty, numeric agreement, daily completion and offline zero-network/zero-persistence behaviour. All inline scripts parse. Non-Battle code remains unchanged from the previously approved branch build.
+
+Run the repository test with:
+
+```bash
+node tests/arena-v6.test.mjs
+```
+
+Still outstanding: real browser rendering, SQL execution, Supabase configuration, scheduled importing and production deployment.
+
+## Known limits
+
+- Anonymous identities can be recreated; rate limiting is not bot-proof.
+- Local daily progress and the backed meme do not sync across browsers or devices.
+- A successful vote whose response is lost can be stored server-side while local progress remains behind; retrying will not double-count it.
+- The leaderboard loads up to 200 contenders and refreshes after the visitor’s own vote, not continuously.
+- MemeAPI sampling is not proof of virality.
+- Moderation/reporting and a real recommendation engine are not included.
+- V5.2’s pre-existing admin upload and direct Supabase-write code remains, as explicitly approved, and still needs a separate security audit.
+- V5.2’s EXPLAINED page skips its database fetch under `file://`, so its local content can differ from production.
