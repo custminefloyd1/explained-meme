@@ -1143,3 +1143,28 @@ Next required actions:
 2. Run the read-only `supabase/certified-funny-import-check.sql`.
 3. Verify 50 Storage objects, 50 supported images, 50 `kind='funny'` rows, zero supported images missing metadata and zero malformed import rows.
 4. Only then retest `certified-funny.html` ratings and refresh persistence.
+
+
+### Certified Funny import verification found stale metadata — 2026-09-15
+
+The user ran `supabase/certified-funny-import-existing-storage.sql` after uploading the new 50-picture inventory, then returned the output of `supabase/certified-funny-import-check.sql`.
+
+Verified result at `2026-09-15 16:48:52+00`:
+
+- Storage objects: 50.
+- Supported Storage images: 50.
+- Funny metadata rows: 100.
+- Supported images missing metadata: 0.
+- Malformed imported rows: 0.
+
+Conclusion: all 50 current uploads were imported correctly, but 50 metadata rows from the deleted prior Storage inventory still remain. The page is not yet a clean 50-picture inventory.
+
+Added `supabase/certified-funny-remove-stale-metadata.sql`. It deletes only `kind='funny'`, `source='owner_storage_import'` metadata whose exact `image_uri` no longer exists in the `memes` Storage bucket. It does not delete current files, votes, unrelated rows or change any grants/RLS policies. The transaction fails closed if stale owner-import metadata remains.
+
+Cleanup commit: `f8e2f77c19fe49affd2212f9b3eeb4d0ff08eaea`.
+
+Next:
+
+1. Run `supabase/certified-funny-remove-stale-metadata.sql`.
+2. Run `supabase/certified-funny-import-check.sql` again.
+3. Require counts of 50 / 50 / 50 / 0 / 0 before browser rating tests.
