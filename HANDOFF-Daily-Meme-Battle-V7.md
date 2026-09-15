@@ -702,3 +702,14 @@ The secret value was not shared in the conversation or repository. Deployment ha
 A subsequent Supabase Functions screenshot contradicted the earlier verbal confirmation. The deployed function is actually named `swift-processor`, not `arena-import-v6`. It showed two deployments under that incorrect name.
 
 Therefore the importer is **not yet deployed under its required stable name**. Do not configure scheduling against `swift-processor`. Keep it temporarily until a correctly named `arena-import-v6` deployment has been created and tested; delete the incorrect function only afterward. The project-level `ARENA_IMPORT_SECRET` was reported configured but has not yet been runtime-tested.
+
+
+### Correct importer deployment verified — 2026-09-15
+
+A Functions-list screenshot verified the final deployment-name state:
+
+- `arena-import-v6` exists with one deployment.
+- The incorrectly named `swift-processor` function was deleted by the user.
+- The screenshot showed exactly one Edge Function in the project.
+
+This corrects the prior uncertain deployment record. Runtime invocation, JWT-verification configuration, external source access, database inserts, and function logs remain unverified.
