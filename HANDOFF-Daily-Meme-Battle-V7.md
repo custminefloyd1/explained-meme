@@ -1129,3 +1129,17 @@ Added read-only `supabase/certified-funny-import-check.sql` to verify Storage co
 Commits: `099a9159ef9c5a35d2ae99458b086a52ac9de98b` and `27bc786048b6b1ced7513664b25a32e206f42f24`.
 
 Neither SQL file has been executed. Next: run the importer, then the verification query and return its single result row.
+
+
+### Certified Funny clean Storage upload — 2026-09-15
+
+The user chose to discard the previous 18-file test inventory and start with a clean Funny archive. They reported uploading 50 selected images to the existing `memes` Storage bucket.
+
+This is user-reported and not yet independently verified. No metadata importer has been reported executed after this upload.
+
+Next required actions:
+
+1. Run `supabase/certified-funny-import-existing-storage.sql`.
+2. Run the read-only `supabase/certified-funny-import-check.sql`.
+3. Verify 50 Storage objects, 50 supported images, 50 `kind='funny'` rows, zero supported images missing metadata and zero malformed import rows.
+4. Only then retest `certified-funny.html` ratings and refresh persistence.
