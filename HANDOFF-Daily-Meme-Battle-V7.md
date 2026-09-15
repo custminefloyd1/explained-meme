@@ -998,3 +998,12 @@ The migration provides:
 Commit: `1fedd480d0d181ffa63d325260b3557ce6724ad1`.
 
 Required order: run this SQL in Supabase, confirm success, then replace the Certified Funny frontend handler with authenticated RPC calls and visible saving/success/failure states. Do not deploy the current Certified Funny handler.
+
+
+### Certified Funny V1 backend migration applied — 2026-09-15
+
+The user ran the complete `supabase/certified-funny-v1.sql` migration in the target Supabase project and reported `Success. No rows returned`.
+
+This means Supabase reported no SQL error and the migration's fail-closed permission assertions did not abort the transaction. The secure rating table and RPC are expected to be installed, with no direct client-table access and no reopening of legacy `public.memes` writes.
+
+This is not yet a completed Certified Funny release. The current frontend still uses the broken legacy direct-PATCH handler and must be replaced with the authenticated `certified_funny_rate_v1` RPC before deployment. Runtime persistence, duplicate-vote handling, error display and concurrent ratings remain to be tested.
