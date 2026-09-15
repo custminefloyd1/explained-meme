@@ -1201,3 +1201,24 @@ Verified counts:
 The previous 50 unusable null-source/null-image orphan rows are gone. The current 50-image owner inventory and its metadata are aligned. No database permissions were opened or changed by this cleanup.
 
 Next release gate: browser-test `http://localhost:8000/certified-funny.html`; verify all images load, one 1–10 rating receives server confirmation, the aggregate changes, refresh preserves the server result, and a second same-day rating on the same picture is rejected.
+
+
+### Certified Funny rapid-rating failure corrected — 2026-09-15
+
+Live local testing succeeded through 20 confirmed ratings, then picture 21 returned the generic `Rating was not saved. Please retry.` state. Inspection proved this matched the backend's per-identity ceiling of 20 ratings in one minute, not a frozen interface. The limit contradicted the intended rapid 25-picture daily deck.
+
+Changes:
+
+- Raised the authenticated RPC abuse ceiling from 20 to 40 ratings per rolling minute, allowing the full 25-picture deck at a fast pace while retaining one rating per identity/meme/UTC day.
+- Kept immutable vote storage, authentication, idempotency, validation, direct-write revocation and RLS unchanged.
+- Frontend now recognizes PostgreSQL code `54000` and instructs the visitor to wait one minute before retrying the same picture.
+- Added a regression assertion for the actionable rate-limit message.
+- Verified the committed frontend contains the error mapping, the migration contains the 40/minute ceiling and the previous 20/minute condition is absent.
+
+Commits:
+
+- Frontend: `1df64eae11aa3ad36c78acce1b566253deb50553`.
+- Backend migration: `e5e2b27a18297370943f2d9f00322690710d3b4c`.
+- Test: `e82533ac01829c2827869607b90b085336fdfe57`.
+
+Deployment requirement: rerun the updated `supabase/certified-funny-v1.sql` in Supabase so the already-installed RPC receives the new ceiling, and use a fresh branch download for the updated frontend message.
