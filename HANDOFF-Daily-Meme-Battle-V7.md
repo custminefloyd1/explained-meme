@@ -1098,3 +1098,34 @@ Commits:
 - Test changes: `eda7048218534a74440346ecb4444306f58a184d` and formatting correction `5148a8cd265f31fa1671690a50fb8eb2826f46b4`.
 
 Next action: run the read-only import preflight in Supabase and return its CSV. After reviewing it, create a narrow owner workflow: bulk upload files through the Supabase dashboard to the existing `memes` bucket, then run a reviewed SQL importer that creates only missing `kind='funny'` metadata rows.
+
+
+### Certified Funny import preflight reviewed — 2026-09-15
+
+The returned preflight CSV, generated at `2026-09-15 16:23:13+00`, confirmed:
+
+- Zero real `public.memes` rows with `kind='funny'`.
+- Eighteen existing objects in the owner-controlled `memes` Storage bucket.
+- All 18 reported objects are JPEG images.
+- `public.memes.id` is required text with no default.
+- All other fields needed for the import are nullable or have defaults.
+- `avg_rating` is double precision with default 0; `ratings_count`, ELO, wins and losses also have safe defaults.
+- The only primary key is `id`; no unique image-path constraint exists.
+
+This proves the legacy tab's six pictures were embedded demo fallbacks. The owner does not need to re-upload the existing 18 files; they need metadata rows.
+
+Added `supabase/certified-funny-import-existing-storage.sql`:
+
+- Creates stable IDs as `funny-` plus MD5 of the Storage object name.
+- Creates only `kind='funny'` metadata for supported images in the `memes` bucket.
+- Stores the object name in `image_uri`.
+- Marks the source as `owner_storage_import`.
+- Does not upload, rename, overwrite or delete Storage objects.
+- Uses `ON CONFLICT DO NOTHING`, so rerunning it does not duplicate rows.
+- Includes a malformed-row assertion that rolls back on failure.
+
+Added read-only `supabase/certified-funny-import-check.sql` to verify Storage count, Funny row count, supported images missing metadata and malformed imports.
+
+Commits: `099a9159ef9c5a35d2ae99458b086a52ac9de98b` and `27bc786048b6b1ced7513664b25a32e206f42f24`.
+
+Neither SQL file has been executed. Next: run the importer, then the verification query and return its single result row.
