@@ -753,3 +753,22 @@ The user ran the post-import eligibility query. Verified counts:
 - Rows returned by current-week `arena_standings_v7(arena_week_v7())`: 15
 
 The complete sourcing-to-standings path is therefore working for the first controlled import. Automatic scheduling is not configured yet. Anonymous Auth, CAPTCHA, real client voting, concurrency, and weekly finalization remain unverified.
+
+
+### Turnstile Battle integration — 2026-09-15
+
+The user supplied the public Cloudflare Turnstile site key. It was added only to the Daily Meme Battle authentication path in `explained meme/index.html`.
+
+Implementation details:
+
+- Turnstile loads lazily only when a live visitor needs a new anonymous Supabase session.
+- Offline preview does not load Turnstile and remains network-free.
+- Existing anonymous sessions and refresh-token renewals do not trigger another challenge.
+- Uses explicit execution with interaction-only appearance.
+- The returned token is sent in Supabase Auth's required `gotrue_meta_security.captcha_token` request field.
+- Load, verification, and timeout failures produce visible voting errors.
+- The public site key is present in frontend code by design. The Turnstile secret key is not in GitHub and must be entered only in Supabase Auth configuration.
+
+The mocked Battle test was extended to verify the CAPTCHA token in the anonymous signup request. All 41 assertions passed, including offline no-network/no-persistence checks and existing voting behaviour.
+
+Do not enable CAPTCHA until its secret is configured in Supabase. Then enable CAPTCHA and Anonymous Sign-Ins together and perform a live incognito vote test.
