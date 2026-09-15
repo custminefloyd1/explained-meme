@@ -906,3 +906,29 @@ Verification:
 - No production deployment was performed.
 
 A valid retest requires downloading a fresh ZIP of `codex/battle-arena-v6`; the user's existing local folder will not receive these commits.
+
+
+### Reliable share panel, crowd-threshold clarity and logo copy — 2026-09-15
+
+The user retested the current Battle and confirmed the ten-vote stop, persisted progress, meme loading and EXPLAINED section work. Two remaining issues were reported: the share action still appeared non-functional in the tested browser, and the crowd-agreement percentage was not shown. The user also requested the logo tagline change from `FUNNY FOREVER` to `FOREVER FUNNY`.
+
+Implemented:
+
+- Replaced dependence on the native browser share sheet with an always-visible in-page share dialog.
+- The dialog contains selectable result text, a Copy action, a WhatsApp link, an Email link and manual Command+C guidance.
+- Uses the fixed canonical live URL `https://explained.meme/#battle`.
+- Retains honest low-sample behaviour. A percentage is shown only when the backend returns at least five earlier votes by other visitors on that exact pair.
+- The low-sample state is now explicit and prominent: `CROWD RESULT LOCKED · This exact matchup needs 5 earlier votes.`
+- A real result is shown prominently as `XX% OF EARLIER VOTES AGREED WITH YOU`.
+- Changed the header tagline to `FOREVER FUNNY`.
+
+The missing percentage in the test was caused by insufficient exact-pair voting history, not lost data or a display failure. Fabricated percentages were not introduced.
+
+Verification:
+
+- Added a test that completes the daily ten, activates Share, and requires the visible fallback panel and Copy action.
+- Updated crowd-feedback expectations for both low-sample and real-consensus cases.
+- All 44 mocked assertions pass against the current GitHub HTML.
+- Frontend commits: `5caf0d6818f212e0a5be6c22bf0d13ccfc98d62f` and `8c6835a8c961af7150c37beafc822211eb0f95d5`.
+- Test commits: `a91873e3ccddeb0d2afe68f0570125629814c82e` and `aa2e85e0dfe4c8a6cb11e0a8f5868079c9cbc27d`.
+- No production deployment was performed. A fresh branch ZIP is required for browser retesting.
