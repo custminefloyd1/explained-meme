@@ -659,3 +659,13 @@ Verified results:
 - RPC grants match the design: `arena_state_v7` is executable by `anon` and `authenticated`; `arena_vote_v7` is executable only by `authenticated`; `arena_week_v7` is public. The privileged finalizer and standings functions are not exposed to client roles.
 
 Database schema installation and static permission verification therefore passed. Runtime voting, anonymous Auth, CAPTCHA, importer deployment, real Trending data, concurrency, and season finalization are still unverified.
+
+
+### Importer payload compatibility fix — 2026-09-15
+
+Before deploying the Edge Function, its insert payload was compared with the verified production `memes` schema. Two blockers were found and corrected in `supabase/functions/arena-import-v6/index.ts`:
+
+- The importer did not supply `memes.id`, which is non-null and has no reported default. New rows now receive a stable ID in the form `reddit-<reddit_id>`.
+- The importer supplied an `origin` property, but the verified table has no `origin` column. That unsupported property was removed.
+
+Without these corrections, the PostgREST insert would have been rejected. The Edge Function is still not deployed and has not been invoked against MemeAPI or the database.
