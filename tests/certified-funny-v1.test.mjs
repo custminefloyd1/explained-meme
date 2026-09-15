@@ -16,6 +16,7 @@ const checks=[
  ["responsive logo is bounded",html.includes(".brand img{display:block;height:80px")&&html.includes("@media(max-width:520px)")],
  ["tagline stays beside logo",html.includes(".brand{display:flex;align-items:center")&&html.includes(".tagline{margin-top:0;white-space:nowrap")],
  ["empty inventory is honest",html.includes("No funny pictures have been imported yet. Owner upload required.")&&html.includes('$("progressText").textContent="0 / 0"')],
- ["canonical page title exists",html.includes("<title>Certified Funny? — Explained Meme</title>")]
+ ["canonical page title exists",html.includes("<title>Certified Funny? — Explained Meme</title>")],
+ ["uploaded filenames stay private",html.includes('function safeTitle(m,i){return "Funny #"+(i+1)}')&&!html.includes("const t=String(m.title")]
 ];
 for(const [name,pass] of checks){console.log((pass?"PASS ":"FAIL ")+name);if(!pass)process.exitCode=1}
