@@ -695,3 +695,10 @@ The user confirmed both of the following in the target Supabase project:
 - Custom function secret `ARENA_IMPORT_SECRET` created and saved.
 
 The secret value was not shared in the conversation or repository. Deployment has not yet been proven by an authorized invocation, function logs, or inserted Trending rows. The next gate is one controlled POST request with the `x-arena-import-secret` header, followed by a database count check.
+
+
+### Importer deployment-name correction — 2026-09-15
+
+A subsequent Supabase Functions screenshot contradicted the earlier verbal confirmation. The deployed function is actually named `swift-processor`, not `arena-import-v6`. It showed two deployments under that incorrect name.
+
+Therefore the importer is **not yet deployed under its required stable name**. Do not configure scheduling against `swift-processor`. Keep it temporarily until a correctly named `arena-import-v6` deployment has been created and tested; delete the incorrect function only afterward. The project-level `ARENA_IMPORT_SECRET` was reported configured but has not yet been runtime-tested.
