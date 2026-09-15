@@ -573,3 +573,22 @@ Do **not** run `arena-v7-retention.sql` yet. Its assumptions must be compared wi
 - Update this handoff.
 - Produce an exact, staged migration checklist.
 - Apply/test through a supported authorized Supabase connection if one becomes available; otherwise guide the user through each reviewed SQL operation and verify returned results before continuing.
+
+
+### Preflight usability update — 2026-09-15
+
+The first multi-query preflight was run in Supabase. The supplied screenshot displayed only the final result grid, because the SQL Editor surfaced the last SELECT. That result confirmed:
+
+- `pg_cron` default version: `1.6.4`
+- Installed version: `NULL`
+- Status: `AVAILABLE_NOT_INSTALLED`
+
+This does **not** mean pg_cron should be installed yet. Scheduling is deferred until the schema and voting functions pass staging tests.
+
+The words `enabled/disabled` visible near the bottom of the editor were part of SQL comments, not actual Authentication settings. Anonymous Sign-Ins and CAPTCHA therefore remain unverified.
+
+To make collection practical for a non-technical operator, added:
+
+- `supabase/arena-v7-preflight-single-result.sql`
+
+It returns every database preflight category in one result row. The user should run the whole file, use **Results → Download CSV**, and attach the CSV. This replaces the earlier instruction to capture every grid separately. The original multi-result preflight remains as a readable diagnostic reference.
