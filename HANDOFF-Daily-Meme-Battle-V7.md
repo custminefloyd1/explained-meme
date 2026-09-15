@@ -720,3 +720,12 @@ This corrects the prior uncertain deployment record. Runtime invocation, JWT-ver
 After disabling legacy JWT verification, the user invoked `arena-import-v6` with an unauthenticated POST request and received HTTP 401 with body `Unauthorized`. The response included a Deno execution ID, confirming the request reached the Edge Function and was rejected by its custom-secret check.
 
 The user then accidentally entered the example JSON response at the shell prompt, producing a local zsh `no matches found` error. That shell error is unrelated to Supabase. An authorized importer invocation has not yet been demonstrated.
+
+
+### First authorized importer test diagnosed — 2026-09-15
+
+The first authorized POST reached the function and returned `{"inserted":0,"failures":[]}`. A follow-up database query confirmed the table remained at 14 total rows, zero Trending rows, and zero non-null Reddit IDs.
+
+Live MemeAPI response inspection identified the cause: current `postLink` values use the short form `https://redd.it/<reddit_id>`, while the importer accepted only `reddit.com/.../comments/<reddit_id>`. Every otherwise-valid candidate was filtered out without being classified as a source failure.
+
+The importer was patched to accept and parse both allowlisted Reddit URL formats while still rejecting unrelated hosts. The corrected version must be redeployed before retesting.
