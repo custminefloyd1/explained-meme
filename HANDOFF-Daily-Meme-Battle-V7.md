@@ -1300,3 +1300,36 @@ Commits:
 - Regression guard: `e56d4e0e2662ac880ddc373f863aad31f18ce3f7`.
 
 No database, authentication, rating, RLS or grant changes were made. Next gate: test navigation in a fresh local branch download, then run a complete pre-deployment smoke test across all public sections.
+
+
+### Standalone free Screensaver V1 built; main navigation integration awaiting approval — 2026-09-15
+
+The old embedded Screensaver tab mixed a usable browser slideshow button with owner-upload instructions and imaginary paid products that had no checkout or deliverable. That presentation was removed from the new standalone design.
+
+Added `explained meme/screensaver.html` as a read-only public browser screensaver:
+
+- Source filters: All, Explained, Trending and Funny.
+- One dominant Start Screensaver action.
+- Native browser fullscreen with safe fallback.
+- Shuffle, top-rated and newest ordering.
+- 8-, 15- and 30-second intervals.
+- Pause, previous, next, close and keyboard controls.
+- Optional Screen Wake Lock where supported.
+- Automatic broken-image skipping.
+- Picture count, honest new-since-last-visit state and top community score.
+- Contextual paths from a slide to Daily Meme Battle, Certified Funny or Explained.
+- No product cards, prices, owner-upload instructions or public write operations.
+- Raw upload filenames are not displayed.
+- First visit shows no fabricated freshness count.
+
+Added `tests/screensaver-v1.test.mjs` with static regression checks. The committed inline script parses successfully and the verified page contains no POST, PATCH or DELETE requests.
+
+Commits:
+
+- Initial standalone viewer: `55d3e9cd3aed71609351ed7347a42c52d424b26a`.
+- Honest freshness state: `011533ed7b9bbd8c0f067622112c31d516dd140d`.
+- Screensaver test: `507351da9892353e39f86c818c7b94e36d2b9515`.
+
+The attempted one-line redirect from the generated `index.html` was rejected because replacing that 462 KB file also resubmits unrelated dormant legacy direct POST/PATCH and fetch-interceptor code. No workaround was used. A prematurely added navigation assertion was removed in commit `a02f2511a3621449293549e6a9824e3151c328c9`, so the repository does not falsely claim integration.
+
+Current state: the standalone page is ready at `screensaver.html`, but the main site's Screensaver button still opens the old embedded tab. Exact user authorization is required before replacing the current branch HTML solely to add the redirect, with the existing database permission lockdown remaining mandatory.
