@@ -1071,3 +1071,30 @@ Limitations and next gate:
 - No production deployment occurred.
 - Runtime rating persistence against Supabase has not yet been browser-tested.
 - Test locally at `http://localhost:8000/certified-funny.html`, confirm a rating changes the server value, then refresh and confirm the value persists before integrating navigation.
+
+
+### Certified Funny empty inventory and header correction — 2026-09-15
+
+The first browser test of the standalone page showed no available pictures and the `FOREVER FUNNY` tagline below the logo.
+
+Diagnosis:
+
+- The legacy tab's six funny pictures were embedded demo fallbacks, not proof of six real `kind='funny'` database rows.
+- The new page intentionally uses only real database inventory, so the archive must be imported before rating can work.
+- The standalone brand anchor did not use a horizontal layout, placing the tagline below the block-level logo.
+
+Implemented:
+
+- Header brand now uses an explicit flex row, keeping `FOREVER FUNNY` beside the logo with responsive spacing.
+- An empty database now shows `0 / 0`, changes the header status, and explicitly reports: `No funny pictures have been imported yet. Owner upload required.`
+- Added read-only `supabase/certified-funny-import-preflight.sql` to inspect the real Funny row count, `memes` Storage bucket object count, complete `public.memes` column/default/nullability definitions, recent Storage metadata and relevant constraints before creating an owner-only bulk-import migration.
+- No public upload permission was restored.
+- All 16 standalone Certified Funny regression checks pass.
+
+Commits:
+
+- Header and empty state: `8199d7235b8cca5688dacd70c476368726e38a6b`.
+- Import preflight: `d51ece1007e3261dafde7720b20de4f6a9eb05d1`.
+- Test changes: `eda7048218534a74440346ecb4444306f58a184d` and formatting correction `5148a8cd265f31fa1671690a50fb8eb2826f46b4`.
+
+Next action: run the read-only import preflight in Supabase and return its CSV. After reviewing it, create a narrow owner workflow: bulk upload files through the Supabase dashboard to the existing `memes` bucket, then run a reviewed SQL importer that creates only missing `kind='funny'` metadata rows.
