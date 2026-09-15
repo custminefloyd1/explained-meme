@@ -1168,3 +1168,19 @@ Next:
 1. Run `supabase/certified-funny-remove-stale-metadata.sql`.
 2. Run `supabase/certified-funny-import-check.sql` again.
 3. Require counts of 50 / 50 / 50 / 0 / 0 before browser rating tests.
+
+
+### Certified Funny orphan source identified and cleanup corrected — 2026-09-15
+
+A source-group diagnostic established the exact composition of the 100 Funny rows:
+
+- 50 valid rows use `source='owner_storage_import'`, with 50 unique `image_uri` and `image_url` values.
+- 50 unusable orphan rows have `source IS NULL`, zero `image_uri` values and zero `image_url` values.
+
+The first cleanup correctly removed nothing because it deliberately targeted only stale `owner_storage_import` rows. Its earlier assumption that the extra records were stale owner imports was disproven.
+
+Updated `supabase/certified-funny-remove-stale-metadata.sql` to delete only the two verified broken patterns: stale owner imports without a matching Storage object, and `kind='funny'` rows whose source, image URI and image URL are all null. Valid current uploads, votes, unrelated rows, grants and RLS policies remain untouched. The script retains a fail-closed post-delete assertion.
+
+Correction commit: `a9b03c86f60d2612997e6ae634dd1960e4f17c89`.
+
+Next: rerun the updated cleanup file, then rerun `supabase/certified-funny-import-check.sql`. Expected counts remain 50 / 50 / 50 / 0 / 0.
