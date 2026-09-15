@@ -592,3 +592,23 @@ To make collection practical for a non-technical operator, added:
 - `supabase/arena-v7-preflight-single-result.sql`
 
 It returns every database preflight category in one result row. The user should run the whole file, use **Results → Download CSV**, and attach the CSV. This replaces the earlier instruction to capture every grid separately. The original multi-result preflight remains as a readable diagnostic reference.
+
+
+### Single-result preflight review — 2026-09-15
+
+The user explicitly approved recording these Supabase findings in this private repository handoff.
+
+The returned CSV from `arena-v7-preflight-single-result.sql` confirmed:
+
+- `public.memes` contains 14 rows and zero `kind='trending'` rows. The live Battle currently has no eligible memes.
+- Required Battle fields exist: `id`, `kind`, `title`, `created_at`, `image_url`, and `image_uri`.
+- IDs are non-null and protected by the primary key.
+- `created_at` is `timestamp without time zone`, not `timestamptz`. The V7 migration must explicitly normalize this legacy timestamp as UTC before execution.
+- Importer prerequisite fields `reddit_id`, `reddit_score`, and `source` are absent. Apply and review `arena-v6-import.sql` before deploying the included importer.
+- RLS is enabled on `memes`, but legacy permissive public INSERT/UPDATE policies and broad direct privileges for `anon` and `authenticated` exist. These are a serious security risk and require a compatibility-aware review because older site features may depend on them.
+- No V7 tables or functions exist, so there are no current V7 migration-name collisions.
+- `pg_cron` version 1.6.4 is available but not installed.
+- Supabase Dashboard verification: Anonymous Sign-Ins are disabled.
+- Supabase Dashboard verification: Bot and Abuse Protection/CAPTCHA is disabled.
+
+Do not enable Anonymous Sign-Ins yet. Do not enable CAPTCHA without first adding a compatible CAPTCHA token flow to the frontend. Do not run `arena-v7-retention.sql` until the timestamp compatibility patch and security review are complete.
