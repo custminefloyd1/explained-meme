@@ -1222,3 +1222,23 @@ Commits:
 - Test: `e82533ac01829c2827869607b90b085336fdfe57`.
 
 Deployment requirement: rerun the updated `supabase/certified-funny-v1.sql` in Supabase so the already-installed RPC receives the new ceiling, and use a fresh branch download for the updated frontend message.
+
+
+### Certified Funny Turnstile interaction repaired — 2026-09-15
+
+Fresh local testing displayed Cloudflare's interactive `Verify you are human` checkbox, but the visitor could not click it. The root cause was an inline `pointer-events:none` rule on the full Turnstile host. The challenge rendered correctly but its own parent discarded pointer input.
+
+The host now uses `pointer-events:auto`; it remains `display:none` outside authentication, so it cannot intercept normal page interaction. Added a regression assertion requiring the interactive rule and forbidding the blocking rule.
+
+Verified on the committed branch:
+
+- Turnstile host contains `pointer-events:auto`.
+- No `pointer-events:none` remains in the standalone page.
+- Regression guard is present.
+
+Commits:
+
+- Frontend: `7338df83e4cb200928f51b4cccc820a7e4368c06`.
+- Test: `09f4d9393c5bc3e2e4bd68aac7a00ee187ba6423`.
+
+No database schema, data, grants or RLS policies changed. Local retesting requires a fresh branch file/ZIP; refreshing an older extracted copy does not retrieve GitHub updates.
