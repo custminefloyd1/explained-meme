@@ -1,5 +1,6 @@
 import {readFileSync} from 'node:fs';
 const html=readFileSync(new URL('../explained meme/index.html',import.meta.url),'utf8');
+if(html.includes('id="explained-upload"')||html.includes('// Admin gate')||html.includes("localStorage.getItem('isAdmin')"))throw Error('Legacy browser-admin uploader still present');
 const start=html.indexOf('/* Battle Arena v6:');
 const end=html.indexOf('\nfunction Ti(){',start);
 if(start<0||end<0)throw Error('Component missing');
