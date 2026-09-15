@@ -1455,3 +1455,20 @@ Still required before navigation integration:
 - Confirm accepted status in the page.
 - Confirm the message in Resend Logs and the destination inbox.
 - Delete only `bright-function`, `smart-function` and `smooth-responder`; preserve `arena-import-v6` and `contact-v1`.
+
+
+### Contact V1 browser submission accepted — 2026-09-15
+
+The user confirmed `contact-v1` has `Verify JWT with legacy secret` OFF and completed a local browser submission through `contact.html`. The page displayed `Message accepted.` after several seconds.
+
+This verifies:
+
+- The browser could authenticate or reuse an anonymous Supabase session.
+- CORS allowed the localhost request.
+- The exact `/functions/v1/contact-v1` endpoint responded.
+- The function returned HTTP success with `accepted:true`.
+- The frontend did not show its success state before that response.
+
+The delay can include Auth, network and Edge Function cold-start time. No performance conclusion should be drawn from one local submission.
+
+Not yet independently confirmed: Resend log status, destination inbox arrival and Reply-To behaviour. Do not connect main navigation or call delivery complete until those checks pass.
