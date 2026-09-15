@@ -3,6 +3,7 @@ const html=readFileSync(new URL('../explained meme/index.html',import.meta.url),
 if(html.includes('id="explained-upload"')||html.includes('// Admin gate')||html.includes("localStorage.getItem('isAdmin')"))throw Error('Legacy browser-admin uploader still present');
 if(html.includes('setNotice("Result copied. Paste it wherever you want.");setShareText("");'))throw Error('Successful copy still closes the share panel');
 if(!html.includes('copied?"Copied!":"Copy result"'))throw Error('Copied confirmation state missing');
+if(!html.includes('if(m.id==="CERTIFIED_FUNNY"){window.location.href="certified-funny.html";return}'))throw Error('Certified Funny navigation is not connected to the secure standalone page');
 const start=html.indexOf('/* Battle Arena v6:');
 const end=html.indexOf('\nfunction Ti(){',start);
 if(start<0||end<0)throw Error('Component missing');
