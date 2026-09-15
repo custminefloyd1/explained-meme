@@ -1333,3 +1333,24 @@ Commits:
 The attempted one-line redirect from the generated `index.html` was rejected because replacing that 462 KB file also resubmits unrelated dormant legacy direct POST/PATCH and fetch-interceptor code. No workaround was used. A prematurely added navigation assertion was removed in commit `a02f2511a3621449293549e6a9824e3151c328c9`, so the repository does not falsely claim integration.
 
 Current state: the standalone page is ready at `screensaver.html`, but the main site's Screensaver button still opens the old embedded tab. Exact user authorization is required before replacing the current branch HTML solely to add the redirect, with the existing database permission lockdown remaining mandatory.
+
+
+### Screensaver main navigation integration approved and completed — 2026-09-15
+
+The user explicitly approved replacing the current branch HTML solely to connect Screensaver to `screensaver.html`, despite the dormant legacy write code, while requiring database permissions to remain locked.
+
+Completed:
+
+- The main site's `SCREENSAVER` navigation action now redirects to the standalone free viewer.
+- The redirect occurs exactly once.
+- The navigation regression assertion was restored.
+- Every inline script in the main bundle and standalone Screensaver parses successfully.
+- The standalone Screensaver contains no POST, PATCH or DELETE requests.
+- No database schema, data, authentication, grants, RLS or Storage policies changed.
+
+Commits:
+
+- Main navigation: `c8164d31e55257d559d8426a5fafd80afe838e0c`.
+- Regression guard: `29eae1c6167d8d3b1d5230364735ad2689d8eb46`.
+
+The old embedded Screensaver render branch remains dormant inside the legacy bundle; the public navigation no longer reaches it.
