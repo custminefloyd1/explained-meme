@@ -1417,3 +1417,12 @@ Commits:
 - Setup guide: `6b99a6f938eb4a5418c00a4311e887a2712bbc83`.
 
 External setup remains mandatory: verify `explained.meme` in Resend, create the sending API key, add `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` as Supabase secrets, run the SQL, deploy `contact-v1`, and prove delivery in Resend Logs and the real inbox. Main navigation must remain on the legacy page until that test passes.
+
+
+### Contact V1 private delivery table applied — 2026-09-15
+
+The user ran the complete `supabase/contact-v1.sql` migration in the target Supabase project and reported `Success. No rows returned`.
+
+Supabase therefore reported no SQL error and the migration's fail-closed privilege assertion did not abort. The private `contact_deliveries_v1` metadata table and sender/time index are expected to be installed with RLS enabled and all direct public/anon/authenticated table access revoked.
+
+This does not prove email delivery. Remaining gates are deploying `contact-v1`, disabling the legacy gateway JWT toggle because the function performs live `auth.getUser` validation itself, testing `contact.html`, verifying the send in Resend Logs and receiving the message in the configured inbox.
