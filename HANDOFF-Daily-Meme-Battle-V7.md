@@ -1567,3 +1567,28 @@ After local test-folder confusion, the user authorized deploying and checking th
 - No Supabase schema, data, authentication, functions, grants, RLS or Storage permissions changed.
 
 Cloudflare deployment and live-domain smoke testing remain external confirmation gates.
+
+
+### Header typography and active-tab consistency V2 — 2026-09-15
+
+Production screenshots showed that the first consistency pass was incomplete. Logo pixel heights matched at equivalent breakpoints, but the main bundle still rendered a Tailwind button with a nested active indicator while standalone pages rendered full-height anchor backgrounds. Standalone pages also used generic monospace instead of JetBrains Mono, so the navigation labels and `FOREVER FUNNY` differed in width and weight.
+
+Corrected on `codex/header-consistency-v2`:
+
+- Replaced the main page's runtime-dependent flex-column logo hack with explicit horizontal brand alignment.
+- Matched the tagline to 10px JetBrains Mono, 700 weight, .22em tracking, .9 opacity and a 10px baseline offset.
+- Matched standalone active tabs to the main page's compact inset pill: 4px vertical margin, 9px vertical padding and 8px radius.
+- Matched navigation type to JetBrains Mono, .12em tracking, 11px mobile and 12px desktop.
+- Preserved 80/64/56px logo sizes and responsive horizontal overflow.
+- Extended the navigation consistency regression test.
+- Fourteen targeted structure, style, routing and standalone-script checks passed.
+
+Commits:
+
+- Main explicit brand layout: `c29f12fae9455e16fd6d0d100a17f1797084e244`.
+- Certified Funny header: `8325d9ecb904da5d114c52b474e7f75503a17363`.
+- Screensaver header: `110b05a158562206726e82581633d7501820fc7c`.
+- Contact header: `0ecb792c7e818ac1a5e6e237d152c4a4f39311d4`.
+- Regression coverage: `5ffa409d95d63f08f0d276be95d138851fb753f2`.
+
+No backend, database, authentication, Edge Function, grant, RLS or Storage permission changed. Database permissions remain locked.
