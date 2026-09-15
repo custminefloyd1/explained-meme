@@ -1555,3 +1555,15 @@ Commits:
 - Regression test: `e521ac147bae7749827db522861770703e26fb89`.
 
 No Supabase schema, data, authentication setting, Edge Function, grant, RLS policy or Storage policy changed. Database permissions remain locked. This branch is not deployed until visual acceptance and a separate merge/deployment action.
+
+
+### Navigation consistency fix merged for deployment — 2026-09-15
+
+After local test-folder confusion, the user authorized deploying and checking the fix on the hosted site. Pull request #2 was marked ready and squash-merged into `main`.
+
+- Reviewed branch head: `05b277d7f856cc225e83b1248899f20eff17f1c2`.
+- Resulting main commit: `8861f8b32d22500566fd60a6b6a4102a280395e1`.
+- Scope: cross-page links, removal of the public LIVE tab, standalone header/logo/tagline consistency and regression coverage.
+- No Supabase schema, data, authentication, functions, grants, RLS or Storage permissions changed.
+
+Cloudflare deployment and live-domain smoke testing remain external confirmation gates.
