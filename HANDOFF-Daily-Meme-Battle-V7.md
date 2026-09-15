@@ -967,3 +967,34 @@ The database permission lockdown was not changed. The explicit CSS was verified 
 Commit: `0ff52179e8267dde23f6c898244f49a4e0c68447`.
 
 No production deployment was performed. Browser verification requires a fresh branch ZIP.
+
+
+### Certified Funny security audit and backend migration prepared — 2026-09-15
+
+The Certified Funny tab was audited before deployment. Its current rating handler is not safe or functional after the legacy-write lockdown:
+
+- It updates React state immediately, so the interface claims success before the server confirms anything.
+- It sends an unauthenticated direct `PATCH` to `public.memes`.
+- It does not await the request or inspect the HTTP response.
+- Its empty `catch` suppresses failures.
+- Because direct client writes to `public.memes` are now correctly revoked, ratings appear to work but do not persist after reload.
+- Concurrent ratings would also lose updates because the browser calculates and overwrites the aggregate.
+
+Added `supabase/certified-funny-v1.sql` as the secure repair backend. It has not yet been executed.
+
+The migration provides:
+
+- Immutable `certified_funny_votes_v1` records with RLS and no direct client access.
+- Authenticated anonymous voting through `certified_funny_rate_v1`.
+- Rating validation from 1 through 10.
+- One rating per identity, meme and UTC day.
+- Idempotent request UUID handling.
+- Per-identity minute rate limiting.
+- Row locking and an atomic server-side average/count update.
+- Validation that only `kind='funny'` records can be rated.
+- Fail-closed permission assertions.
+- No reopening of direct `public.memes` writes.
+
+Commit: `1fedd480d0d181ffa63d325260b3557ce6724ad1`.
+
+Required order: run this SQL in Supabase, confirm success, then replace the Certified Funny frontend handler with authenticated RPC calls and visible saving/success/failure states. Do not deploy the current Certified Funny handler.
