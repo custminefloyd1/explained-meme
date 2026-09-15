@@ -203,8 +203,7 @@ div.overflow-x-auto { display: none !important; }
 .av-season{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 18px;border:1px solid #3e4921;background:linear-gradient(110deg,#191e0c,#101010);border-radius:14px;margin-bottom:18px}
 .av-season strong{font:700 10px monospace;letter-spacing:.14em;color:#d4ff00}.av-season p{font-size:14px;font-weight:600;margin-top:6px}
 .av-last{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;font-size:12px;color:#a1a1aa}.av-last>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.av-feedback{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:5px;max-width:90vw;width:max-content;padding:14px 20px;border:1px solid #657526;border-radius:14px;background:#151b0bf2;color:#e5efc6;box-shadow:0 12px 40px #000b;pointer-events:none;font-size:12px}
-.av-feedback strong{font:700 10px monospace;letter-spacing:.15em;color:#d4ff00}
+.av-feedback{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:7px;max-width:92vw;min-width:min(360px,88vw);width:max-content;padding:18px 24px;border:2px solid #d4ff00;border-radius:14px;background:#1d2808f7;color:#f4f8e7;box-shadow:0 0 0 4px #d4ff0024,0 16px 48px #000d;pointer-events:none;font-size:13px;font-weight:600}\n.av-feedback strong{font:800 12px monospace;letter-spacing:.15em;color:#d4ff00}
 @media(max-width:600px){.av-header h1{font-size:32px}.av-season p{font-size:12px}.av-feedback{font-size:11px;bottom:10px;padding:12px 14px}.av-last{font-size:10px}.av-backed{gap:8px}}
 </style>
 </head>
@@ -440,7 +439,7 @@ function ArenaV6(){
        E("p",{className:"av-muted"},"Comparison uses earlier votes from other visitors on the same matchup; ties and pairs with fewer than five earlier votes are excluded."),
        E("div",{className:"av-picks"},...daily.map((p,i)=>E("div",{key:i},p.title))),
        E("p",null,tracked?"You're backing #"+tracked.rank+". Return to see how it finishes on Sunday.":"Back a meme below, then return for its weekly result."),
-       E("div",{className:"av-actions"},button("Share my result",share,"av-primary"),button("Keep battling",()=>{setExtra(true);choose(rows)},"av-quiet"))):
+       E("div",{className:"av-actions"},button("Share my result",share,"av-primary"),E("span",{className:"av-muted"},"Come back tomorrow for fresh matchups."))):
      pair.length<2?E("div",{className:"av-empty"},E("h2",null,"You're caught up."),E("p",null,"No unseen eligible matchups remain today."+(extraCount?" You completed "+extraCount+" extra pick"+(extraCount===1?".":"s."):"")+" Check back as new contenders arrive."),button("Check for new memes",()=>{seen.current.clear();load()},"av-primary")):
      E(R.Fragment,null,E("div",{className:"av-round"},E("span",null,total<10?"PICK "+(total+1)+" OF 10":"EXTRA PICK "+(extraCount+1)),E("span",{className:"av-muted"},"Tap a meme. Next battle loads automatically.")),E("div",{className:"av-match"},...pair.map(card)),E("div",{className:"av-controls"},button("Skip battle",()=>{setError("");choose(rows)},"av-quiet",phase==="voting"),E("span",{className:"av-muted"},"← / → to vote · expand to read")))),
    E("aside",{className:"av-sidebar"},E("div",{className:"av-board"},E("div",{className:"av-board-head"},E("div",null,E("div",{className:"av-eyebrow"},"THE PECKING ORDER"),E("h2",null,"This week's favourites")),tag(localPreview?"DEMO":"TOP 10")),
