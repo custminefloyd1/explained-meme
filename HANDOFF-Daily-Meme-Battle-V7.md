@@ -1626,3 +1626,15 @@ Commits:
 - Regression guard: `2e20fa670079b75c1503453c60b19c71877b2b97`.
 
 No backend or database permissions changed.
+
+
+### Header-width fix V3 merged — 2026-09-16
+
+The user approved PR #4. It was marked ready and squash-merged into `main`.
+
+- Reviewed branch head: `6b500793fad6dffe0a8b22d3e30f25bcadb6d374`.
+- Resulting main commit: `f79d2645359dee1695dfb2e5b6ed65bec4548790`.
+- Scope: eliminate route-to-route header movement by giving all standalone headers the main site's effective width while retaining each page body's existing layout.
+- No backend, Supabase configuration, schema, data, Edge Function, grant, RLS or Storage permission changed.
+
+A fresh `main` archive must be uploaded to Cloudflare before this fix appears on the live site.
