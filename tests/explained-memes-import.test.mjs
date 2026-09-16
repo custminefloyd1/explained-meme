@@ -41,6 +41,29 @@ test("the editorial pilot ships exactly ten local reference images", async () =>
   await Promise.all(ids.map((id, i) => access(new URL(`../explained meme/assets/explained-${id}-${names[i]}.jpg`, import.meta.url))));
 });
 
+test("the remaining release ships 80 traced local reference images", async () => {
+  const sources = JSON.parse(await readFile(new URL("../data/explained-image-sources.json", import.meta.url), "utf8"));
+  assert.equal(sources.entries.length, 80);
+  assert.equal(new Set(sources.entries.map((entry) => entry.id)).size, 80);
+  await Promise.all(sources.entries.map((entry) =>
+    access(new URL(`../explained meme/${entry.image_path}`, import.meta.url))
+  ));
+  for (const entry of sources.entries) {
+    assert.match(entry.image_source, /^https:\/\//, entry.id);
+    assert.match(entry.research_source, /^https:\/\//, entry.id);
+  }
+});
+
+test("release SQL populates both trigger-synchronised image columns", async () => {
+  for (const file of ["explained-memes-pilot-release.sql", "explained-memes-remaining-release.sql"]) {
+    const sql = await readFile(new URL(`../supabase/${file}`, import.meta.url), "utf8");
+    assert.match(sql, /\(id, title, image_url, image_uri,/);
+    assert.match(sql, /image_url = excluded\.image_url,/);
+    assert.match(sql, /image_uri = excluded\.image_uri,/);
+    assert.doesNotMatch(sql, /^\s*(grant|create\s+policy|alter\s+table)\b/imu);
+  }
+});
+
 test("Screensaver excludes Explained editorial-reference images", async () => {
   const html = await readFile(new URL("../explained meme/screensaver.html", import.meta.url), "utf8");
   assert.match(html, /select=id,kind,image_url,image_uri,source,/);
