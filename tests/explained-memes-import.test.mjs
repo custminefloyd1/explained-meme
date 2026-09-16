@@ -69,3 +69,20 @@ test("Screensaver excludes Explained editorial-reference images", async () => {
   assert.match(html, /select=id,kind,image_url,image_uri,source,/);
   assert.match(html, /!String\(m\.source\|\|""\)\.startsWith\("explained_editorial_reference:"\)/);
 });
+
+
+test("title sanitizer keeps legitimate long Explained titles", async () => {
+  const html = await readFile(new URL("../explained meme/index.html", import.meta.url), "utf8");
+  const sanitizerSource = html.match(/function Sn\(e\)\{.*?return!1\}/s)?.[0];
+
+  assert.ok(sanitizerSource, "title sanitizer must remain present in the bundle");
+  assert.doesNotMatch(sanitizerSource, /e\.length>24/);
+
+  const isUploadedFilename = Function(`${sanitizerSource}; return Sn`)();
+  assert.equal(isUploadedFilename("Pedro Pascal Laughing/Crying"), false);
+  assert.equal(isUploadedFilename("The Most Interesting Man in the World"), false);
+  assert.equal(isUploadedFilename("IMG_0837 (44).JPG"), true);
+  assert.equal(isUploadedFilename("413b467b-9a2c-4e1f-b8d2-7f9a3c2e1a8d"), true);
+  assert.equal(isUploadedFilename("uploads/meme-title"), true);
+  assert.equal(isUploadedFilename("uploads\\meme-title"), true);
+});
