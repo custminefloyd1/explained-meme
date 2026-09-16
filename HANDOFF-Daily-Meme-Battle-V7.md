@@ -1592,3 +1592,15 @@ Commits:
 - Regression coverage: `5ffa409d95d63f08f0d276be95d138851fb753f2`.
 
 No backend, database, authentication, Edge Function, grant, RLS or Storage permission changed. Database permissions remain locked.
+
+
+### Header consistency V2 merged — 2026-09-16
+
+The user explicitly approved completing PR #3 before starting the Explained meme bulk-content project. PR #3 was marked ready and squash-merged into `main`.
+
+- Reviewed branch head: `ee4061f18ddbecb574566d9ec4812abd28dcc62d`.
+- Resulting main commit: `1c1ea5ffbef0ac74233e61550613b7f8395c2a92`.
+- Scope: explicit horizontal brand layout, unified JetBrains Mono tagline/navigation typography, consistent active-tab proportions and expanded regression coverage.
+- No Supabase schema, data, authentication, Edge Function, grant, RLS or Storage permission changed.
+
+Cloudflare must receive a fresh archive from `main` before the change appears on the live site. The separate Explained 100-meme sourcing/review/import project has not started and will use its own branch and release gate.
