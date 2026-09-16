@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const manifestUrl = new URL("../data/explained-memes-approved.json", import.meta.url);
@@ -29,4 +29,20 @@ test("records include the fields required by the Explained page", () => {
     }
     assert.ok(Array.isArray(entry.tags) && entry.tags.length > 0, entry.id);
   }
+});
+
+test("the editorial pilot ships exactly ten local reference images", async () => {
+  const ids = [7, 8, 9, 10, 11, 12, 13, 14, 16, 17];
+  const names = [
+    "this-is-fine", "is-this-a-pigeon", "one-does-not-simply", "success-kid",
+    "bad-luck-brian", "philosoraptor", "ancient-aliens", "futurama-fry",
+    "surprised-pikachu", "mocking-spongebob"
+  ];
+  await Promise.all(ids.map((id, i) => access(new URL(`../explained meme/assets/explained-${id}-${names[i]}.jpg`, import.meta.url))));
+});
+
+test("Screensaver excludes Explained editorial-reference images", async () => {
+  const html = await readFile(new URL("../explained meme/screensaver.html", import.meta.url), "utf8");
+  assert.match(html, /select=id,kind,image_url,image_uri,source,/);
+  assert.match(html, /!String\(m\.source\|\|""\)\.startsWith\("explained_editorial_reference:"\)/);
 });
