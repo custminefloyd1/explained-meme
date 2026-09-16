@@ -64,10 +64,10 @@ test("release SQL populates both trigger-synchronised image columns", async () =
   }
 });
 
-test("Screensaver excludes Explained editorial-reference images", async () => {
+test("Screensaver includes Explained editorial-reference images", async () => {
   const html = await readFile(new URL("../explained meme/screensaver.html", import.meta.url), "utf8");
   assert.match(html, /select=id,kind,image_url,image_uri,source,/);
-  assert.match(html, /!String\(m\.source\|\|""\)\.startsWith\("explained_editorial_reference:"\)/);
+  assert.doesNotMatch(html, /startsWith\("explained_editorial_reference:"\)/);
 });
 
 
