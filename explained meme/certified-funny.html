@@ -27,6 +27,10 @@ main{padding:38px 0 64px}.intro{display:flex;align-items:end;justify-content:spa
 .nav{align-items:center;gap:4px}.nav a{box-sizing:border-box;padding:13px 20px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.12em;line-height:1}.nav .active{margin:4px 0;padding:9px 20px;border-radius:8px}
 @media(min-width:768px){.nav a{font-size:12px}}
 @media(max-width:767px){.nav a{padding-left:12px;padding-right:12px}.nav .active{padding-left:12px;padding-right:12px}}
+
+/* Header width V3 — match main site's 1280px shell with 32px desktop padding */
+.site-head>.brand-row,.site-head>.nav{width:min(1216px,calc(100% - 64px))}
+@media(max-width:767px){.site-head>.brand-row{width:calc(100% - 32px)}.site-head>.nav{width:calc(100% - 16px)}}
 </style>
 </head>
 <body>

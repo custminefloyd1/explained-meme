@@ -25,6 +25,7 @@ for (const page of standalone) {
   assert.match(page, /\/\* Header consistency V2/);
   assert.match(page, /\.nav \.active\{margin:4px 0;padding:9px 20px;border-radius:8px\}/);
   assert.match(page, /font-family:"JetBrains Mono",monospace;font-size:10px/);
+  assert.match(page, /\.site-head>\.brand-row,\.site-head>\.nav\{width:min\(1216px,calc\(100% - 64px\)\)\}/);
 }
 
 console.log("navigation consistency checks passed");

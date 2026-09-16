@@ -19,6 +19,10 @@ main{padding:48px 0 72px}.layout{display:grid;grid-template-columns:minmax(0,.85
 .nav{align-items:center;gap:4px}.nav a{box-sizing:border-box;padding:13px 20px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.12em;line-height:1}.nav .active{margin:4px 0;padding:9px 20px;border-radius:8px}
 @media(min-width:768px){.nav a{font-size:12px}}
 @media(max-width:767px){.nav a{padding-left:12px;padding-right:12px}.nav .active{padding-left:12px;padding-right:12px}}
+
+/* Header width V3 — match main site's 1280px shell with 32px desktop padding */
+.site-head>.brand-row,.site-head>.nav{width:min(1216px,calc(100% - 64px))}
+@media(max-width:767px){.site-head>.brand-row{width:calc(100% - 32px)}.site-head>.nav{width:calc(100% - 16px)}}
 </style></head>
 <body>
 <header class="site-head"><div class="wrap brand-row"><a class="brand" href="index.html"><img src="explained_meme_logo_transparent.png" alt="Explained Meme"><span class="tagline">FOREVER FUNNY</span></a></div><nav class="wrap nav" aria-label="Main navigation"><a href="index.html">EXPLAINED</a><a href="index.html#battle">DAILY MEME BATTLE</a><a href="certified-funny.html">CERTIFIED FUNNY?</a><a href="screensaver.html">SCREENSAVER</a><a class="active" href="contact.html">CONTACT</a></nav></header>
