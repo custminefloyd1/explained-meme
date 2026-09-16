@@ -1604,3 +1604,25 @@ The user explicitly approved completing PR #3 before starting the Explained meme
 - No Supabase schema, data, authentication, Edge Function, grant, RLS or Storage permission changed.
 
 Cloudflare must receive a fresh archive from `main` before the change appears on the live site. The separate Explained 100-meme sourcing/review/import project has not started and will use its own branch and release gate.
+
+
+### Header horizontal-shift fix V3 — 2026-09-16
+
+User testing identified a remaining horizontal jump between page groups. The cause was different centered `.wrap` caps: the main header used a 1280px shell with 32px desktop padding, Certified Funny/Screensaver used 1180px and Contact used 1120px. Centering those widths moved the header whenever the route changed.
+
+Corrected on `codex/header-width-consistency-v3`:
+
+- Standalone brand and navigation rows now share the main header's effective 1216px desktop content line.
+- Mobile brand rows use 16px side insets and navigation uses the main page's 8px side inset.
+- Page-body widths remain unchanged, preserving the intentional layouts of Certified Funny, Screensaver and Contact.
+- Added a regression assertion for the shared header width.
+- Nine targeted width and standalone-script checks passed.
+
+Commits:
+
+- Certified Funny: `7a41721604a7029cc38f47fa07047a7c3f5cda53`.
+- Screensaver: `a7bfd8886252a2e1dfd47cf990c473c24254f9f1`.
+- Contact: `7d95b8f281146c91fb23820a76d2e7c023075aa7`.
+- Regression guard: `2e20fa670079b75c1503453c60b19c71877b2b97`.
+
+No backend or database permissions changed.
