@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-16",
+  "purpose": "Rights-acquisition pilot for Explained editorial pages only",
+  "default_rule": "Do not download, upload, publish, hotlink, or reuse an image until written permission or a documented licence covers the exact asset and intended use.",
+  "entries": [
+    {
+      "id": "explained-7",
+      "title": "This Is Fine",
+      "rights_owner_or_route": "K.C. Green",
+      "route_status": "direct_creator_contact_found",
+      "official_route": "https://kcgreendotcom.com/",
+      "contact": "kcgreenlicensing@gmail.com",
+      "requested_asset": "Exact two-panel Gunshow comic crop commonly used as the meme",
+      "clearance_status": "permission_required",
+      "recommended_action": "Request a web-editorial licence, attribution wording, approved source file, territory, term and fee.",
+      "fallback": "Commission an original scene about calm denial during a crisis without copying Green's dog, panels or composition."
+    },
+    {
+      "id": "explained-8",
+      "title": "Is This a Pigeon?",
+      "rights_owner_or_route": "Bandai Namco Filmworks / Sunrise licensing inquiry",
+      "route_status": "official_corporate_inquiry_found",
+      "official_route": "https://www.bnfw.co.jp/en/",
+      "contact": null,
+      "requested_asset": "Exact still from The Brave Fighter of Sun Fighbird used by the meme",
+      "clearance_status": "permission_required",
+      "recommended_action": "Submit an audiovisual-usage inquiry identifying the episode, frame and editorial website use.",
+      "fallback": "Commission an original misidentification scene with unrelated characters and composition."
+    },
+    {
+      "id": "explained-9",
+      "title": "One Does Not Simply",
+      "rights_owner_or_route": "Warner Bros. Discovery clip and still licensing",
+      "route_status": "official_still_licensing_route_found",
+      "official_route": "https://www.warnerbros.com/studio/services/clip-and-still-licensing",
+      "contact": "clipandstilldept@wbd.com",
+      "requested_asset": "Exact Boromir still from The Lord of the Rings: The Fellowship of the Ring",
+      "clearance_status": "permission_required",
+      "recommended_action": "Submit the official still-licensing form for the exact frame and editorial website use; confirm any separate talent approvals.",
+      "fallback": "Commission an original fantasy traveller making a warning gesture without LOTR characters, costume or setting."
+    },
+    {
+      "id": "explained-10",
+      "title": "Success Kid",
+      "rights_owner_or_route": "Laney Griner",
+      "route_status": "owner_confirmed_contact_unverified",
+      "official_route": null,
+      "contact": null,
+      "requested_asset": "Original 2007 Success Kid photograph",
+      "clearance_status": "permission_required",
+      "recommended_action": "Locate and verify a current representative or direct owner contact before making a licence request; do not rely on old Getty listings.",
+      "fallback": "Commission an original victory photograph with model release and a distinct pose and setting."
+    },
+    {
+      "id": "explained-11",
+      "title": "Bad Luck Brian",
+      "rights_owner_or_route": "Photographer and/or portrait owner not yet verified",
+      "route_status": "owner_and_contact_unresolved",
+      "official_route": null,
+      "contact": null,
+      "requested_asset": "Exact school portrait of Kyle Craven used by the meme",
+      "clearance_status": "blocked_unresolved_owner",
+      "recommended_action": "Verify the photographer/copyright owner and Kyle Craven's current authorised licensing contact before requesting use.",
+      "fallback": "Commission an original awkward school-portrait character with releases."
+    },
+    {
+      "id": "explained-12",
+      "title": "Philosoraptor",
+      "rights_owner_or_route": "Sam Smith, creator of the Lonely Dinosaur illustration",
+      "route_status": "creator_confirmed_contact_unverified",
+      "official_route": "https://knowyourmeme.com/memes/philosoraptor",
+      "contact": null,
+      "requested_asset": "Original Philosoraptor / Lonely Dinosaur illustration",
+      "clearance_status": "permission_required",
+      "recommended_action": "Verify a current creator or representative contact and request a limited editorial web licence.",
+      "fallback": "Commission an original contemplative prehistoric character with a different species, silhouette and pose."
+    },
+    {
+      "id": "explained-13",
+      "title": "Ancient Aliens",
+      "rights_owner_or_route": "A+E / HISTORY rights inquiry; separate personality clearance may apply",
+      "route_status": "official_corporate_contact_only",
+      "official_route": "https://www.aenetworks.com/contact",
+      "contact": null,
+      "requested_asset": "Exact Giorgio A. Tsoukalos still used by the meme",
+      "clearance_status": "permission_required",
+      "recommended_action": "Ask A+E for the correct still-licensing desk and confirm whether talent approval is also required.",
+      "fallback": "Commission an original enthusiastic mystery presenter with a distinct appearance and gesture."
+    },
+    {
+      "id": "explained-14",
+      "title": "Futurama Fry",
+      "rights_owner_or_route": "Disney/Fox content-rights inquiry",
+      "route_status": "rights_holder_identified_route_unverified",
+      "official_route": "https://thewaltdisneycompany.com/contact-us/",
+      "contact": null,
+      "requested_asset": "Exact Fry still from Futurama used by the meme",
+      "clearance_status": "permission_required",
+      "recommended_action": "Obtain the correct Disney/Fox still-licensing route and request permission for the exact frame.",
+      "fallback": "Commission an original uncertain character squinting, with unrelated design and setting."
+    },
+    {
+      "id": "explained-16",
+      "title": "Surprised Pikachu",
+      "rights_owner_or_route": "The Pokemon Company licensing inquiry",
+      "route_status": "official_licensing_business_identified",
+      "official_route": "https://corporate.pokemon.co.jp/en/business/licences/",
+      "contact": null,
+      "requested_asset": "Exact Pikachu anime still used by the meme",
+      "clearance_status": "permission_required",
+      "recommended_action": "Request the proper regional media/still-licensing contact and disclose the commercial, ad-supported editorial site context.",
+      "fallback": "Commission an original surprised creature that does not use Pokemon character features."
+    },
+    {
+      "id": "explained-17",
+      "title": "Mocking SpongeBob",
+      "rights_owner_or_route": "Paramount content licensing / consumer products",
+      "route_status": "official_licensing_business_identified",
+      "official_route": "https://www.paramount.com/about/businesses/content-licensing",
+      "contact": null,
+      "requested_asset": "Exact SpongeBob SquarePants still used by the meme",
+      "clearance_status": "permission_required",
+      "recommended_action": "Ask Paramount for the correct still-licensing desk and request permission for the exact frame and editorial context.",
+      "fallback": "Commission an original mocking character with unrelated anatomy, pose and setting."
+    }
+  ]
+}
