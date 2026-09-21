@@ -630,5 +630,39 @@ function Ti(){let[e,t]=F.useState(()=>location.hash==="#battle"?"BATTLE_ARENA":"
 })();
 </script>
 
+<script>
+// Standalone generator integration. Kept outside the generated React bundle so
+// the feature can be removed or upgraded without rewriting the legacy build.
+(function(){
+  let queued=false;
+  function enhance(){
+    queued=false;
+    const nav=[...document.querySelectorAll("nav")].find(n=>n.textContent.includes("DAILY MEME BATTLE"));
+    if(nav&&!nav.querySelector('[data-meme-generator-nav]')){
+      const link=document.createElement("a");
+      link.dataset.memeGeneratorNav="true";
+      link.href="meme-generator.html";
+      link.textContent="MEME GENERATOR";
+      link.className="relative whitespace-nowrap px-3 md:px-5 py-3 mono text-[11px] md:text-[12px] tracking-[0.12em] font-semibold text-zinc-500 hover:text-zinc-200";
+      const contact=[...nav.children].find(x=>x.textContent.trim()==="CONTACT");
+      nav.insertBefore(link,contact||null);
+    }
+    document.querySelectorAll('h2.text-\\[24px\\]').forEach(heading=>{
+      const panel=heading.closest(".relative.w-full");
+      const image=panel?.querySelector("img");
+      if(!panel||!image||panel.querySelector('[data-use-template]'))return;
+      const link=document.createElement("a");
+      link.dataset.useTemplate="true";
+      link.textContent="USE THIS TEMPLATE";
+      link.className="mt-4 inline-flex items-center rounded-full bg-[#d4ff00] px-4 py-2 mono text-[11px] font-bold text-black";
+      link.href="meme-generator.html?image="+encodeURIComponent(image.currentSrc||image.src)+"&title="+encodeURIComponent(heading.textContent||"");
+      heading.insertAdjacentElement("afterend",link);
+    });
+  }
+  new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(enhance)}}).observe(document.getElementById("root"),{childList:true,subtree:true});
+  enhance();
+})();
+</script>
+
 </body>
 </html>
