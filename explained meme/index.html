@@ -182,7 +182,7 @@ div.overflow-x-auto { display: none !important; }
 .av-primary,.av-vote{background:var(--lime);border-color:var(--lime);color:#080808}.av-vote{width:100%}.av-quiet{background:transparent;color:#b8b8c0;border-color:#333;padding:7px 10px}
 .av-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 0}.av-board{border:1px solid #303030;background:#101010;border-radius:18px;overflow:hidden}
 .av-board-head{display:flex;justify-content:space-between;align-items:center;padding:20px 18px 0}.av-board-head h2{font-size:21px;font-weight:700;letter-spacing:-.04em;margin-top:6px}
-.av-board-copy{padding:12px 18px}.av-leaders{list-style:none;margin:0;padding:0}.av-leaders li{display:flex;align-items:center;gap:10px;border-top:1px solid #242424;padding:12px}
+.av-board-copy{padding:12px 18px}.av-board-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:14px 18px}.av-board-tab{border:1px solid #333;border-radius:9px;background:#181818;color:#aaa;padding:9px;font:700 10px monospace;cursor:pointer}.av-board-tab.active{border-color:var(--lime);background:var(--lime);color:#050505}.av-leaders{list-style:none;margin:0;padding:0}.av-leaders li{display:flex;align-items:center;gap:10px;border-top:1px solid #242424;padding:12px}
 .av-rank{font:12px monospace;color:#777}.av-first{color:var(--lime)}.av-leader-link{display:flex;align-items:center;gap:10px;min-width:0;flex:1;text-align:left;border:0;background:transparent;color:white;padding:0}.av-thumb{width:42px;height:46px;object-fit:contain;background:#050505;border-radius:5px;flex-shrink:0}
 .av-leader-link span{min-width:0}.av-leader-link strong{display:block;font-size:11px;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px}.av-leader-link small{font:9px monospace;color:var(--muted)}
 .av-star{border:0;background:transparent;color:var(--lime);padding:6px;font-size:19px!important}.av-board-footer{padding:16px;border-top:1px solid #292929;font-size:11px;line-height:1.5;color:var(--muted)}
@@ -269,7 +269,7 @@ function ArenaV6(){
  const [phase,setPhase]=R.useState("loading"),[error,setError]=R.useState(""),[feedback,setFeedback]=R.useState(null);
  const [journal,setJournal]=R.useState(()=>read("arena-v7-journal",{})),[backed,setBacked]=R.useState(()=>read("arena-v7-backed",null));
  const [ready,setReady]=R.useState({}),[broken,setBroken]=R.useState([]),[preview,setPreview]=R.useState(null);
- const [extra,setExtra]=R.useState(false),[clock,setClock]=R.useState(Date.now()),[meta,setMeta]=R.useState(null);
+ const [extra,setExtra]=R.useState(false),[clock,setClock]=R.useState(Date.now()),[meta,setMeta]=R.useState(null),[boardMode,setBoardMode]=R.useState("daily");
  const [notice,setNotice]=R.useState(""),[lastPick,setLastPick]=R.useState(null),[shareText,setShareText]=R.useState(""),[copied,setCopied]=R.useState(false);
  const modal=R.useRef(null),busy=R.useRef(false),alive=R.useRef(true),seen=R.useRef(new Set()),exposure=R.useRef({});
  const activePair=R.useRef(""),requests=R.useRef({}),lastVisit=R.useRef(read("arena-v7-visited",null));
@@ -318,7 +318,8 @@ function ArenaV6(){
      if(localPreview){
        const now=new Date(),start=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
        start.setUTCDate(start.getUTCDate()-((start.getUTCDay()+6)%7));
-       state={pool:rankRows(previewMemes()),week_start:start.toISOString(),closes_at:new Date(+start+604800000).toISOString(),server_now:now.toISOString(),new_today:6,new_since:null,eligible_count:6,previous_winner:null};
+       const demo=rankRows(previewMemes());
+       state={pool:demo,daily_board:demo.map((m,i)=>({...m,wins:6-i,losses:i+1,appearances:7,win_rate:Math.round(100*(6-i)/7),score:Math.max(0,76-i*8),rank:i+1})),week_start:start.toISOString(),closes_at:new Date(+start+604800000).toISOString(),server_now:now.toISOString(),new_today:6,new_since:null,eligible_count:6,previous_winner:null};
      }else{
        const r=await fetch(kn+"/rest/v1/rpc/arena_state_v7",{method:"POST",headers,body:JSON.stringify({p_since:lastVisit.current})});
        if(!r.ok)throw Error(r.status===404?"Live competition is awaiting the v7 database setup. Open the downloaded HTML for the offline demo.":"Couldn't load the competition. Please retry.");
@@ -374,13 +375,15 @@ function ArenaV6(){
        }
        data=await r.json();
        if(!Array.isArray(data.rows))throw Error("Incomplete vote response. Please refresh.");
+       const stateResponse=await fetch(kn+"/rest/v1/rpc/arena_state_v7",{method:"POST",headers,body:JSON.stringify({p_since:null})});
+       if(stateResponse.ok){const latest=await stateResponse.json();if(Array.isArray(latest.daily_board))data.daily_board=latest.daily_board}
      }
      if(!alive.current)return;
      const next=data.rows.map(m=>({...m,id:String(m.id)})).sort((a,b)=>a.rank-b.rank);
      const entry={id:winner.id,title:winner.title,pair:key,agreement:data.agreement,majority:data.majority,sample:data.sample,demo:localPreview};
      const nextHistory=Object.fromEntries(Object.entries(history.current).filter(([d])=>d>=new Date(Date.now()-30*86400000).toISOString().slice(0,10)));
      nextHistory[today]=[...(nextHistory[today]||[]),entry];history.current=nextHistory;setJournal(nextHistory);save("arena-v7-journal",nextHistory);
-     setRows(next);setLastPick(next.find(m=>m.id===winner.id));setFeedback({...data,title:winner.title,demo:localPreview});
+     setRows(next);if(Array.isArray(data.daily_board))setMeta(v=>({...v,daily_board:data.daily_board}));setLastPick(next.find(m=>m.id===winner.id));setFeedback({...data,title:winner.title,demo:localPreview});
      activePair.current="";if(total+1<10||extra)choose(next);
    }catch(e){if(alive.current)setError(e.message)}
    finally{busy.current=false;if(alive.current)setPhase("ready")}
@@ -424,7 +427,13 @@ function ArenaV6(){
    E("button",{type:"button",className:"av-image-button",disabled:!canVote,onClick:()=>vote(i),"aria-label":"Vote for "+m.title},image(m)),
    E("div",{className:"av-card-bottom"},E("h2",null,m.title),button(phase==="voting"?"Saving…":"This one's funnier "+(i?"→":"←"),()=>vote(i),"av-vote",!canVote)));
  }
+ function leader(m){
+   const weekly=rows.find(x=>x.id===m.id)||m;
+   const detail=boardMode==="daily"?m.wins+"W · "+m.losses+"L · "+m.score+" daily score":m.wins+"W · "+m.losses+"L · "+(m.wins+m.losses<3?"ROOKIE":m.elo+" rating");
+   return E("li",{key:m.id},E("span",{className:"av-rank"},m.rank),E("button",{type:"button",className:"av-leader-link",onClick:()=>setPreview(m)},image(m,true),E("span",null,E("strong",null,m.title),E("small",null,detail))),button(backed?.id===m.id?"★":"☆",()=>back(weekly),"av-star",false,"Back "+m.title));
+ }
  const champion=meta?.previous_winner;
+ const boardRows=boardMode==="daily"?(meta?.daily_board||[]):rows.slice(0,10);
  return E("section",{className:"arena-v6","aria-label":"Daily Meme Battle"},
    E("header",{className:"av-header"},E("div",null,E("div",{className:"av-eyebrow"},"TODAY’S VIRAL MEMES. YOUR VOTE."),E("h1",null,"DAILY MEME ",E("span",null,"BATTLE")),E("p",{className:"av-subtitle"},"Vote on the viral memes people are sharing right now. New contenders arrive every day; the weekly leaderboard resets every Monday.")),
      E("div",{className:"av-daily"},E("span",{className:"av-eyebrow"},localPreview?"DEMO DAILY TEN":"YOUR DAILY TEN"),E("strong",null,Math.min(total,10),E("small",null," / 10 picks"+(extraCount?" · "+extraCount+" extra":""))),E("progress",{max:10,value:Math.min(total,10),"aria-label":"Daily progress"}),E("span",{className:"av-muted"},"Resets in "+Math.floor(dayLeft/3600000)+"h "+Math.floor(dayLeft%3600000/60000)+"m · UTC"))),
@@ -444,9 +453,10 @@ function ArenaV6(){
        E("div",{className:"av-actions"},button("Share my result",share,"av-primary"),E("span",{className:"av-muted"},"Come back tomorrow for fresh matchups."))):
      pair.length<2?E("div",{className:"av-empty"},E("h2",null,"You're caught up."),E("p",null,"No unseen eligible matchups remain today."+(extraCount?" You completed "+extraCount+" extra pick"+(extraCount===1?".":"s."):"")+" Check back as new contenders arrive."),button("Check for new memes",()=>{seen.current.clear();load()},"av-primary")):
      E(R.Fragment,null,E("div",{className:"av-round"},E("span",null,total<10?"PICK "+(total+1)+" OF 10":"EXTRA PICK "+(extraCount+1)),E("span",{className:"av-muted"},"Tap a meme. Next battle loads automatically.")),E("div",{className:"av-match"},...pair.map(card)),E("div",{className:"av-controls"},button("Skip battle",()=>{setError("");choose(rows)},"av-quiet",phase==="voting"),E("span",{className:"av-muted"},"← / → to vote · expand to read")))),
-   E("aside",{className:"av-sidebar"},E("div",{className:"av-board"},E("div",{className:"av-board-head"},E("div",null,E("div",{className:"av-eyebrow"},"THE PECKING ORDER"),E("h2",null,"Weekly viral leaderboard")),tag(localPreview?"DEMO":"TOP 10")),
-     E("ol",{className:"av-leaders"},...rows.slice(0,10).map(m=>E("li",{key:m.id},E("span",{className:"av-rank"},m.rank),E("button",{type:"button",className:"av-leader-link",onClick:()=>setPreview(m)},image(m,true),E("span",null,E("strong",null,m.title),E("small",null,m.wins+"W · "+m.losses+"L · "+(m.wins+m.losses<3?"ROOKIE":m.elo+" rating")))),button(backed?.id===m.id?"★":"☆",()=>back(m),"av-star",false,"Back "+m.title)))),
-     E("div",{className:"av-board-footer"},"☆ Back one contender. Return for its result. Ratings reset each week.")),
+   E("aside",{className:"av-sidebar"},E("div",{className:"av-board"},E("div",{className:"av-board-head"},E("div",null,E("div",{className:"av-eyebrow"},"THE PECKING ORDER"),E("h2",null,boardMode==="daily"?"Today's viral leaderboard":"Weekly viral leaderboard")),tag(localPreview?"DEMO":"TOP 10")),
+     E("div",{className:"av-board-tabs","aria-label":"Leaderboard period"},button("TODAY",()=>setBoardMode("daily"),"av-board-tab "+(boardMode==="daily"?"active":""),false,"Show today's leaderboard"),button("THIS WEEK",()=>setBoardMode("weekly"),"av-board-tab "+(boardMode==="weekly"?"active":""),false,"Show this week's leaderboard")),
+     boardRows.length?E("ol",{className:"av-leaders"},...boardRows.map(leader)):E("div",{className:"av-board-copy av-muted"},"The daily board appears after a meme has at least three matchups today."),
+     E("div",{className:"av-board-footer"},boardMode==="daily"?"Today resets at 00:00 UTC. Weighted score balances win rate with vote volume.":"☆ Back one contender. Return for its result. Ratings reset each week.")),
      champion&&E("div",{className:"av-rules"},E("h3",null,"LAST WEEK'S RESULT"),E("p",null,champion.status==="winner"?"🏆 "+champion.title:"Not enough votes to crown a winner."),champion.status==="winner"&&image({title:champion.title,image_url:champion.image_url},true),E("p",null,champion.votes+" recorded votes")),
      E("details",{className:"av-rules"},E("summary",null,"The rules, in plain English"),E("p",null,"Monday–Sunday UTC seasons. Only memes imported in that week compete; import time is not Reddit post time. A winner needs three appearances and the week needs five votes. Ties break by wins, then stable ID."),E("p",null,"Your vote updates an opponent-adjusted rating. Crowd percentages use earlier votes on this exact pair from other visitors, not all internet users. One vote per pair per UTC day."),E("p",null,"Daily progress and your backed meme are browser-local. Reloading the offline demo resets its simulated progress.")))),
    feedback&&E("div",{className:"av-feedback",role:"status","aria-live":"polite"},E("strong",null,feedback.demo?"DEMO RESULT":"VOTE COUNTED"),E("span",null,feedback.agreement===null?"CROWD RESULT LOCKED · This exact matchup needs 5 earlier votes.":feedback.agreement+"% OF EARLIER VOTES AGREED WITH YOU · n="+feedback.sample),E("span",null,feedback.before_rank!==feedback.after_rank?"Your vote moved this meme from #"+feedback.before_rank+" to #"+feedback.after_rank:"Your pick holds #"+feedback.after_rank+" · +"+feedback.delta+" rating")),
