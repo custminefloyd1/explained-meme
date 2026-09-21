@@ -17,6 +17,8 @@ test("generator is browser-only and exports PNG",()=>{
 
 test("generator offers explained templates and editable text",()=>{
  assert.match(html,/kind=eq\.meme/);
+ assert.match(html,/select=id,title,image_url,image_uri&kind=eq\.meme/);
+ assert.doesNotMatch(html,/select=[^"']*(?:storage_path|file_name)/);
  assert.match(html,/id="topText"/);
  assert.match(html,/id="bottomText"/);
  assert.match(html,/id="fontSize"/);
