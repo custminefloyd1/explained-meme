@@ -21,7 +21,10 @@ export default {
 
     for (const sub of ["memes", "dankmemes", "wholesomememes"]) {
       try {
-        const response = await fetch("https://meme-api.com/gimme/" + sub + "/10", {
+        // Pull more than we publish because Reddit's hot list repeats across days.
+        // Existing reddit_id values are removed below so each run can still add a
+        // genuinely new daily batch instead of silently returning zero inserts.
+        const response = await fetch("https://meme-api.com/gimme/" + sub + "/25", {
           signal: AbortSignal.timeout(10000),
         });
         if (!response.ok) throw new Error("Source status " + response.status);
@@ -78,9 +81,32 @@ export default {
       );
     }
 
-    const rows = [...candidates.values()]
+    const candidateRows = [...candidates.values()];
+    const candidateIds = candidateRows.map((row) => String(row.reddit_id));
+    const { data: existing, error: lookupError } = await ctx.supabaseAdmin
+      .from("memes")
+      .select("reddit_id")
+      .in("reddit_id", candidateIds);
+
+    if (lookupError) {
+      console.error("Arena import dedupe lookup error", lookupError);
+      return Response.json(
+        { error: "Database dedupe lookup failed. Check function logs.", failures },
+        { status: 502 },
+      );
+    }
+
+    const existingIds = new Set(
+      (existing || []).map((row) => String(row.reddit_id)),
+    );
+    const rows = candidateRows
+      .filter((row) => !existingIds.has(String(row.reddit_id)))
       .sort((a, b) => Number(b.reddit_score) - Number(a.reddit_score))
       .slice(0, 15);
+
+    if (!rows.length) {
+      return Response.json({ inserted: 0, available: 0, failures });
+    }
 
     const { data: inserted, error } = await ctx.supabaseAdmin
       .from("memes")
