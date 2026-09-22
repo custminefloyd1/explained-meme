@@ -1,0 +1,46 @@
+{
+  "updated_at": "2026-09-22T12:00:00Z",
+  "methodology": "Editorial signals are based on dated, public evidence from the linked research sources. Labels describe the evidence available at the update time; they are not fabricated popularity scores.",
+  "signals": [
+    {
+      "title": "We're All Just Blocking the Street",
+      "status": "BREAKING",
+      "platforms": ["TikTok", "Instagram Reels"],
+      "why": "A Family Guy marching-band scene became a caption and lip-dub format. A September 15 remix passed one million views within six days.",
+      "origin": "Family Guy clip; meme breakout in September 2026",
+      "source": "https://knowyourmeme.com/memes/were-all-just-blocking-the-street"
+    },
+    {
+      "title": "Wawario and Wawaluigi",
+      "status": "RISING",
+      "platforms": ["TikTok", "YouTube"],
+      "why": "Fan-made Mario opposites surged from late August into September after an original character song was reposted and remixed.",
+      "origin": "A.J.N. YouTube video / TikTok reposts (2026)",
+      "source": "https://trending.knowyourmeme.com/editorials/guides/who-are-wawario-and-wawaluigi-the-viral-memes-about-the-fan-made-super-mario-bros-characters-explained"
+    },
+    {
+      "title": "Celebrity Lookalike / Star By Face",
+      "status": "RISING",
+      "platforms": ["TikTok"],
+      "why": "Users are sharing celebrity-match reveals generated from their own photos. The format began spreading widely in early to mid-September.",
+      "origin": "Star By Face results shared on TikTok (September 2026)",
+      "source": "https://knowyourmeme.com/memes/celebrity-lookalike-trend-star-by-face"
+    },
+    {
+      "title": "Thoughts on Lanterns",
+      "status": "VIRAL",
+      "platforms": ["X / Twitter"],
+      "why": "Badly edited redraws turn the Lanterns cast into characters from other franchises. Several early variants received tens of thousands of likes.",
+      "origin": "Lanterns promotional image / X (September 2026)",
+      "source": "https://knowyourmeme.com/memes/thoughts-on-lanterns"
+    },
+    {
+      "title": "La Fairs",
+      "status": "VIRAL",
+      "platforms": ["TikTok", "Instagram Reels", "Twitch"],
+      "why": "A deliberately forced mash-up of two existing memes escaped its original stream; an early TikTok edit passed two million views in a week.",
+      "origin": "Braeden Twitch stream (August 29, 2026)",
+      "source": "https://knowyourmeme.com/memes/la-fairs"
+    }
+  ]
+}
