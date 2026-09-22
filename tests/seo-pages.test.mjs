@@ -32,3 +32,16 @@ test("SEO discovery files expose meme pages", async () => {
   assert.match(index, /href="this-is-fine\/"/);
   await stat(join(site, "memes", "ibiza-final-boss", "index.html"));
 });
+
+test("homepage routes meme cards to full explanations without transfer noise", async () => {
+  const homepage = await readFile(join(site, "index.html"), "utf8");
+  assert.doesNotMatch(homepage, /Warning: truncated output/);
+  assert.match(homepage, /window\.location\.assign\("memes\/"\+slug\+"\/"\)/);
+  assert.match(homepage, /link\.textContent="USE IN GENERATOR"/);
+});
+
+test("detail pages name the generator action clearly", async () => {
+  const html = await readFile(join(site, "memes", "this-is-fine", "index.html"), "utf8");
+  assert.match(html, />USE IN GENERATOR<\/a>/);
+  assert.doesNotMatch(html, />USE THIS TEMPLATE<\/a>/);
+});
