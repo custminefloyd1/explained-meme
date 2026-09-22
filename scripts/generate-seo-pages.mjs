@@ -89,7 +89,7 @@ const page = (entry) => {
     <article>
       <div class="hero">
         <figure class="image"><img src="${escapeHtml(entry.image_url)}" alt="${escapeHtml(entry.title)} meme" width="900" height="675"></figure>
-        <div><div class="eyebrow">MEME EXPLAINED</div><h1>${escapeHtml(entry.title)}</h1><p class="summary">${escapeHtml(entry.meaning)}</p><div class="actions"><a class="button" href="../../meme-generator.html?image=${encodeURIComponent(entry.image_url)}&amp;title=${encodeURIComponent(entry.title)}">USE THIS TEMPLATE</a>${entry.research_source ? `<a class="button secondary" href="${escapeHtml(entry.research_source)}" rel="nofollow noopener">RESEARCH SOURCE</a>` : ""}</div></div>
+        <div><div class="eyebrow">MEME EXPLAINED</div><h1>${escapeHtml(entry.title)}</h1><p class="summary">${escapeHtml(entry.meaning)}</p><div class="actions"><a class="button" href="../../meme-generator.html?image=${encodeURIComponent(entry.image_url)}&amp;title=${encodeURIComponent(entry.title)}">USE IN GENERATOR</a>${entry.research_source ? `<a class="button secondary" href="${escapeHtml(entry.research_source)}" rel="nofollow noopener">RESEARCH SOURCE</a>` : ""}</div></div>
       </div>
       <div class="details"><section class="card meaning"><div class="label">WHAT IT MEANS</div><p>${escapeHtml(entry.meaning)}</p></section><section class="card"><div class="label">ORIGIN</div><p>${escapeHtml(entry.origin)}</p></section><section class="card"><div class="label">EXAMPLE</div><p>${escapeHtml(entry.example)}</p></section></div>
     </article>
