@@ -45,3 +45,10 @@ test("detail pages name the generator action clearly", async () => {
   assert.match(html, />USE IN GENERATOR<\/a>/);
   assert.doesNotMatch(html, />USE THIS TEMPLATE<\/a>/);
 });
+
+test("detail pages use the site logo and omit related suggestions", async () => {
+  const html = await readFile(join(site, "memes", "always-has-been", "index.html"), "utf8");
+  assert.match(html, /src="\.\.\/\.\.\/explained_meme_logo_transparent\.png"/);
+  assert.doesNotMatch(html, /Related meme explanations/);
+  assert.doesNotMatch(html, /class="related"/);
+});
