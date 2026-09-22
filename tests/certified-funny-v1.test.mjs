@@ -21,6 +21,7 @@ const checks=[
  ["canonical page title exists",html.includes("<title>Certified Funny? — Explained Meme</title>")],
  ["uploaded filenames stay private",html.includes('function safeTitle(m,i){return "Funny #"+(i+1)}')&&!html.includes("const t=String(m.title")],
  ["leaderboard pictures open full preview",html.includes('id="leaderDialog"')&&html.includes("function openLeader(m,i,rank)")&&html.includes('row.addEventListener("click"')],
- ["leaderboard rows are keyboard accessible",html.includes('const row=document.createElement("button")')&&html.includes('row.type="button"')&&html.includes('row.setAttribute("aria-label"')]
+ ["leaderboard rows are keyboard accessible",html.includes('const row=document.createElement("button")')&&html.includes('row.type="button"')&&html.includes('row.setAttribute("aria-label"')],
+ ["rating deck is randomized on every load",html.includes("function randomizedDeck(list)")&&html.includes("state.deck=randomizedDeck(state.all)")&&!html.includes("function seededDeck(list)")]
 ];
 for(const [name,pass] of checks){console.log((pass?"PASS ":"FAIL ")+name);if(!pass)process.exitCode=1}
