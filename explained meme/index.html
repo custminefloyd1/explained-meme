@@ -645,6 +645,15 @@ function Ti(){let[e,t]=F.useState(()=>location.hash==="#battle"?"BATTLE_ARENA":"
   function enhance(){
     queued=false;
     const nav=[...document.querySelectorAll("nav")].find(n=>n.textContent.includes("DAILY MEME BATTLE"));
+    if(nav&&!nav.querySelector('[data-meme-radar-nav]')){
+      const radar=document.createElement("a");
+      radar.dataset.memeRadarNav="true";
+      radar.href="meme-radar.html";
+      radar.textContent="MEME RADAR";
+      radar.className="relative whitespace-nowrap px-3 md:px-5 py-3 mono text-[11px] md:text-[12px] tracking-[0.12em] font-semibold text-zinc-500 hover:text-zinc-200";
+      const battle=[...nav.children].find(x=>x.textContent.trim()==="DAILY MEME BATTLE");
+      nav.insertBefore(radar,battle||nav.firstChild);
+    }
     if(nav&&!nav.querySelector('[data-meme-generator-nav]')){
       const link=document.createElement("a");
       link.dataset.memeGeneratorNav="true";

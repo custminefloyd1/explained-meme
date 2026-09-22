@@ -7,11 +7,15 @@ const index = read("index.html");
 const certified = read("certified-funny.html");
 const screensaver = read("screensaver.html");
 const contact = read("contact.html");
+const generator = read("meme-generator.html");
+const radar = read("meme-radar.html");
 const standalone = [certified, screensaver, contact];
 
 assert.match(certified, /href="screensaver\.html">SCREENSAVER/);
 assert.match(certified, /href="contact\.html">CONTACT/);
 assert.match(screensaver, /href="contact\.html">CONTACT/);
+for (const page of [...standalone, generator, radar]) assert.match(page, /href="meme-radar\.html"[^>]*>MEME RADAR/);
+assert.match(index, /radar\.dataset\.memeRadarNav="true"/);
 assert.doesNotMatch(index, /\{id:"LIVE",label:"LIVE"\}/);
 assert.match(index, /className:"flex flex-row items-end gap-3 text-left group cursor-pointer max-w-full"/);
 assert.match(index, /tracking-\[0\.22em\].*mb-\[10px\] opacity-90/);
